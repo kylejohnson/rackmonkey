@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!-- 
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# Device search table template                                               #
+##############################################################################
+-->
+<head>
+	<title>Device Search | RackMonkey</title>
+	<style type="text/css" media="all">
+	@import "<TMPL_VAR NAME=web_root>/styles/main.css";
+	@import "<TMPL_VAR NAME=web_root>/styles/tabs.css";
+	@import "<TMPL_VAR NAME=web_root>/styles/itemtable.css";
+	</style>
+	<style type="text/css" media="print">
+	@import "<TMPL_VAR NAME=web_root>/styles/print.css";	
+	</style>
+	<script type="text/javascript" src="<TMPL_VAR NAME=web_root>/javascript/racklib.js"></script>
+	<link rel="icon" href="<TMPL_VAR NAME=web_root>/graphics/favicon.ico" />
+</head>
+<body onload="if (getCookie('showdomain') == 'off') { showHideDomain(); }">
+	<TMPL_INCLUDE NAME="nav-device.ssi">
+	<div id="main">
+			<p>
+				<strong>Device Search</strong><br/>Found <TMPL_VAR ESCAPE=HTML NAME=listed_device_count> devices which match <em><TMPL_VAR ESCAPE=HTML NAME=device_search></em>.
+			</p>
+		<table class="itemtable">
+			<tr>
+				<th colspan="3">
+					<a title="Create a new device" onclick="window.location = '<TMPL_VAR NAME=base_url>?view=device&amp;view_type=create'; return false;"><img class="create" src="<TMPL_VAR NAME=web_root>/graphics/icons/add.png" width="14" height="14" alt=""/></a>
+					<a title="Sort by name" href="<TMPL_VAR NAME=base_url>?view=device&amp;view_type=default_search&amp;order_by=device.name&amp;device_search=<TMPL_VAR ESCAPE=URL NAME=device_search>">Device</a> 
+					<a id="domainLink" class="small" title="Hide domain" href="#" onclick="showHideDomain(); return false;">.dom</a>
+				</th>
+				<th><a title="Sort by rack" href="<TMPL_VAR NAME=base_url>?view=device&amp;view_type=default_search&amp;order_by=rack.name&amp;device_search=<TMPL_VAR ESCAPE=URL NAME=device_search>">Rack</a></th>
+				<th><a title="Sort by room" href="<TMPL_VAR NAME=base_url>?view=device&amp;view_type=default_search&amp;order_by=room.name&amp;device_search=<TMPL_VAR ESCAPE=URL NAME=device_search>">Room</a></th>
+				<th><a title="Sort by role" href="<TMPL_VAR NAME=base_url>?view=device&amp;view_type=default_search&amp;order_by=role.name&amp;device_search=<TMPL_VAR ESCAPE=URL NAME=device_search>">Role</a></th>
+				<th><a title="Sort by hardware type" href="<TMPL_VAR NAME=base_url>?view=device&amp;view_type=default_search&amp;order_by=hardware.name&amp;device_search=<TMPL_VAR ESCAPE=URL NAME=device_search>">Hardware</a></th>
+				<th><a title="Sort by operating system" href="<TMPL_VAR NAME=base_url>?view=device&amp;view_type=default_search&amp;order_by=os.name&amp;device_search=<TMPL_VAR ESCAPE=URL NAME=device_search>">OS</a></th>
+				<th><a title="Sort by serial number" href="<TMPL_VAR NAME=base_url>?view=device&amp;view_type=default_search&amp;order_by=device.serial_no&amp;device_search=<TMPL_VAR ESCAPE=URL NAME=device_search>">Serial</a></th>		
+				<th><a title="Sort by asset tag" href="<TMPL_VAR NAME=base_url>?view=device&amp;view_type=default_search&amp;order_by=device.asset_no&amp;device_search=<TMPL_VAR ESCAPE=URL NAME=device_search>">Asset</a></th>				
+				<th><a title="Sort by customer" href="<TMPL_VAR NAME=base_url>?view=device&amp;view_type=default_search&amp;order_by=customer.name&amp;device_search=<TMPL_VAR ESCAPE=URL NAME=device_search>">Customer</a></th>
+				<th style="text-align: right"><a title="Sort by age" href="<TMPL_VAR NAME=base_url>?view=device&amp;view_type=default_search&amp;order_by=device.purchased&amp;device_search=<TMPL_VAR ESCAPE=URL NAME=device_search>">Age</a></th>		
+				<th><a title="Sort by notes" href="<TMPL_VAR NAME=base_url>?view=device&amp;view_type=default_search&amp;order_by=device.notes&amp;device_search=<TMPL_VAR ESCAPE=URL NAME=device_search>">Notes</a></th>		
+			</tr>
+			<TMPL_IF NAME=devices><TMPL_LOOP NAME=devices>
+			<TMPL_IF NAME="__odd__"><tr class="odd"><TMPL_ELSE><tr class="even"></TMPL_IF>
+				<td class="item_name" <TMPL_UNLESS in_service>style="background: #FDD"</TMPL_UNLESS>><a title="View details for this device" href="<TMPL_VAR NAME=base_url>?view=device&amp;view_type=single&amp;id=<TMPL_VAR ESCAPE=URL NAME=id>"><TMPL_VAR ESCAPE=HTML NAME=name><span class='domainSpan'><TMPL_UNLESS NAME=domain_meta_default_data>.<TMPL_VAR ESCAPE=HTML NAME=domain_name></TMPL_UNLESS></span></a></td>
+				<td class="item_edit" <TMPL_UNLESS in_service>style="background: #FDD"</TMPL_UNLESS>><a title="Edit device '<TMPL_VAR ESCAPE=HTML NAME=name>'" href="<TMPL_VAR NAME=base_url>?view=device&amp;view_type=edit&amp;id=<TMPL_VAR ESCAPE=URL NAME=id>"><img style="float: left; border: none" src="<TMPL_VAR NAME=web_root>/graphics/icons/pencil.png" width="14" height="14" alt=""/></a></td>
+				<td class="item_delete" <TMPL_UNLESS in_service>style="background: #FDD"</TMPL_UNLESS>><a onclick="return confirmDel('<TMPL_VAR ESCAPE=HTML NAME=name>')" title="Delete device '<TMPL_VAR ESCAPE=HTML NAME=name>'" href="<TMPL_VAR NAME=base_url>?view=device&amp;view_type=default_search&amp;act=delete&amp;act_on=device&amp;act_id=<TMPL_VAR ESCAPE=URL NAME=id>&amp;device_search=<TMPL_VAR ESCAPE=HTML NAME=device_search>"><img style="float: left; border: none" src="<TMPL_VAR NAME=web_root>/graphics/icons/delete.png" width="14" height="14" alt=""/></a></td>	
+				<td><TMPL_UNLESS NAME=building_meta_default_data><a title="View device in rack" href="<TMPL_VAR NAME=base_url>?view=rack&amp;view_type=physical&amp;id=<TMPL_VAR ESCAPE=URL NAME=rack>&amp;device_id=<TMPL_VAR ESCAPE=URL NAME=id>"><TMPL_ELSE><a title="View unracked devices" href="<TMPL_VAR NAME=base_url>?view=device&amp;view_type=default_unracked"></TMPL_UNLESS><TMPL_VAR ESCAPE=HTML NAME=rack_name><TMPL_UNLESS NAME=building_meta_default_data> [<TMPL_VAR ESCAPE=HTML NAME=rack_pos>]</TMPL_UNLESS></a></td>
+				<td><TMPL_UNLESS NAME=building_meta_default_data><TMPL_VAR ESCAPE=HTML NAME=room_name> in <TMPL_IF NAME=building_name_short><TMPL_VAR ESCAPE=HTML NAME=building_name_short><TMPL_ELSE><TMPL_VAR ESCAPE=HTML NAME=building_name></TMPL_IF><TMPL_ELSE>N/A</TMPL_UNLESS></td>
+				<td><TMPL_VAR ESCAPE=HTML NAME=role_name></td>
+				<td><TMPL_UNLESS NAME=hardware_meta_default_data><TMPL_UNLESS NAME=hardware_manufacturer_meta_default_data><TMPL_VAR ESCAPE=HTML NAME=hardware_manufacturer_name> </TMPL_UNLESS></TMPL_UNLESS><TMPL_VAR ESCAPE=HTML NAME=hardware_name></td>
+				<td><TMPL_VAR ESCAPE=HTML NAME=os_name><TMPL_IF NAME=os_version> <TMPL_VAR ESCAPE=HTML NAME=os_version></TMPL_IF></td>
+				<td><TMPL_IF NAME=serial_no><TMPL_VAR ESCAPE=HTML NAME=serial_no><TMPL_ELSE>-</TMPL_IF></td>
+				<td><TMPL_IF NAME=asset_no><TMPL_VAR ESCAPE=HTML NAME=asset_no><TMPL_ELSE>-</TMPL_IF></td>				
+				<td><TMPL_VAR ESCAPE=HTML NAME=customer_name></td>
+				<td style="text-align: right"><TMPL_IF NAME=age><TMPL_VAR ESCAPE=HTML NAME=age><TMPL_ELSE>-</TMPL_IF></td>
+				<td><TMPL_IF NAME=notes_short><span title="<TMPL_VAR NAME=notes>"><TMPL_VAR NAME=notes_short></span><TMPL_ELSE><TMPL_IF NAME=notes><TMPL_VAR NAME=notes><TMPL_ELSE>-</TMPL_IF></TMPL_IF></td>	
+			</tr>
+			</TMPL_LOOP></TMPL_IF>
+			<tr>
+				<td colspan="13" class="footer">
+					<TMPL_UNLESS NAME=all_devices_listed><div style="float: right"><a href="<TMPL_VAR NAME=base_url>?view=device&amp;view_type=default">Show all</a></div></TMPL_UNLESS>
+					Showing <TMPL_VAR ESCAPE=HTML NAME=listed_device_count> of <TMPL_VAR ESCAPE=HTML NAME=total_device_count> devices. <em>Devices with a red tint behind their name aren't in service.</em>
+				</td>
+			</tr>
+		</table>
+		<p id="search_explain"><em>Device name, serial number and asset number are searched. Searching is not case sensitive.</em></p>
+	</div>
+	<TMPL_INCLUDE NAME="footer.ssi">
+</body>
+</html>

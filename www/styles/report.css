@@ -1,0 +1,59 @@
+/*
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# Report CSS styling                                                           #
+##############################################################################
+*/
+
+table.report 
+{
+	border-collapse: collapse;
+	margin-top: -0.5em;
+}
+
+table.report th
+{
+	background: #444;
+	color: #FFF;
+	border: solid 1px #000;
+	padding: 5px;
+	text-align: left;
+}
+
+table.report td
+{
+	border: solid black;
+	border-width: 1px;
+	padding: 4px;
+}
+
+table.report td.numerical
+{
+	text-align: right;
+}
+
+table.report td.item_name
+{
+	font-weight: bold;
+	border-right: none;
+	min-width: 4em;
+}
+
+table.report td.item_edit
+{
+	border-left: none;
+	padding-right: 4px;
+}
+
+h3
+{
+	margin-top: 1.25em;
+	margin-bottom: -0.6em;
+}
+
+table.report td.item_name
+{
+	font-weight: bold;
+}

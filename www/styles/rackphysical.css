@@ -1,0 +1,115 @@
+/*
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# CSS styling for physical rack layout                                       #
+##############################################################################
+*/
+
+.rack_physical_num
+{
+	font-family: verdana, sans-serif;
+	font-size: 9px;
+	text-align: right;
+	color: white;
+	border-color: black;
+	background-color: #444;
+	padding: 1px 2px;
+	height: 14px;	/* Overriden by size_of_u in the rackmonkey.conf file */
+}
+
+.rack_physical_dev
+{
+	font-family: verdana, sans-serif;	
+	font-size: 9px;
+	background-color: #DDD;
+	width: 220px;
+	padding: 1px 3px;	
+}
+
+.rack_physical_dev_wide
+{
+	font-family: verdana, sans-serif;	
+	font-size: 9px;
+	background-color: #DDD;
+	width: 700px;
+	padding: 1px 3px;	
+}
+
+.rack_physical_selected
+{
+	font-family: Verdana, sans-serif;
+	font-size: 9px;
+	background-color: #F90;
+	width: 220px;
+	padding: 1px 3px;	
+}
+
+.rack_physical_selected_wide
+{
+	font-family: Verdana, sans-serif;
+	font-size: 9px;
+	background-color: #F90;
+	width: 700px;
+	padding: 1px 3px;	
+}
+
+.rack_physical_empty
+{
+	font-family: Verdana, sans-serif;
+	font-size: 9px;
+	background-color: white;
+	width: 220px;
+	padding: 1px 3px;	
+}
+
+.rack_physical_empty_wide
+{
+	font-family: Verdana, sans-serif;
+	font-size: 9px;
+	background-color: white;
+	width: 700px;
+	padding: 1px 3px;	
+}
+
+.rack_physical
+{
+	float: left;
+	border-spacing: 0px;
+	border-width: 1px;
+	border-collapse: collapse;
+	margin: 8px 8px 8px 0px;
+}
+
+td
+{
+	border: solid;
+	border-width: 1px;
+	padding: 3px 4px;
+	background: transparent;
+}
+
+th.rack_header
+{
+	padding-left: 4px;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	text-align: left;
+	background: #444;
+	color: #FFF;
+	border: solid 1px #000;
+	padding: 2px;
+	text-align: center;
+}
+a.rack_header
+{
+	text-decoration: none;
+	font-size: small;
+	color: white;
+}
+
+a.racklayout
+{
+	text-decoration: none;
+}

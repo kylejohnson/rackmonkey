@@ -1,0 +1,66 @@
+/*
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# Main CSS styling                                                           #
+##############################################################################
+*/
+
+body 
+{
+  	color: black;
+  	background: white;
+  	font-family: helvetica, sans-serif;
+	font-size: small;
+	margin: 0;
+}
+
+#main
+{
+	padding-left: 1em;
+}
+
+#footer
+{
+	padding-left: 1.2em;
+	margin-top: 1em;
+	font-size: x-small;
+	font-family: verdana, helvetica, sans-serif;
+	clear: both;
+}
+
+button
+{
+	background: #EEE;
+	border-left: solid 1px #FFF;
+	border-top: solid 1px #FFF;
+	border-right: solid 1px #999;
+	border-bottom: solid 1px #999;
+	text-align: center;
+  	font-family: verdana, helvetica, sans-serif;
+	font-size: 0.8em;
+	font-weight: normal;
+	padding: 2px 6px;
+	vertical-align: middle;
+    cursor: pointer;
+}
+
+label
+{
+	font-size: 0.8em;
+	font-family: verdana, helvetica, sans-serif;
+	font-weight: bold;
+}
+
+a.small
+{
+	font-size: x-small;
+	font-family: verdana, helvetica, sans-serif;
+}
+
+hr
+{
+    margin-left: 0px;
+    margin-right: 12px;
+}

@@ -1,0 +1,90 @@
+/*
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# CSS styling for forms                                                      #
+##############################################################################
+*/
+
+table.form
+{
+	border: solid 1px #000;
+	width: 650px;
+	margin-top: 10px;
+	background: #DDD;
+	border-collapse: collapse;
+}
+
+table.form th
+{
+	border: solid 1px #000;
+	border-collapse: collapse;
+	padding: 5px;
+	background: #444;
+	color: white;
+	text-align: left;
+}
+
+table.form th span.title
+{
+	font-family: helvetica, sans-serif;
+}
+
+table.form td
+{
+	padding: 6px;
+}
+
+table.form td.footer
+{
+	padding: 7px;
+	background: #444;
+	color: #FFF;
+	border: solid 1px #000;
+	text-align: center;
+}
+
+table.form hr
+{
+    height: 1px;
+	border: 0;
+	color: #444;
+	background: #888;
+	width: 100%;
+}
+
+table.form div
+{
+	margin-bottom: 8px;
+}
+
+table.form span.updated
+{
+	font-size: x-small;
+  	font-family: verdana, helvetica, sans-serif;
+}
+
+table.form div.key
+{
+	font-weight: bold;
+	color: #444;
+	font-size: smaller;
+	font-family: verdana, helvetica, sans-serif;
+	margin-bottom: 0.25em;
+}
+
+table.form span.key
+{
+	font-weight: bold;
+	color: #444;
+	font-size: smaller;
+	font-family: verdana, helvetica, sans-serif;
+}
+
+#notes_style_key
+{
+	font-size: smaller;
+	font-family: verdana, helvetica, sans-serif;
+	display: none;
+}

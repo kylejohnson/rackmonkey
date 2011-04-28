@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!-- 
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# Report default template                                                    #
+##############################################################################
+-->
+<head>
+	<title>Reports | RackMonkey</title>
+	<style type="text/css" media="all">
+	@import "<TMPL_VAR NAME=web_root>/styles/main.css";
+	@import "<TMPL_VAR NAME=web_root>/styles/tabs.css";
+	@import "<TMPL_VAR NAME=web_root>/styles/report.css";
+	</style>
+	<style type="text/css" media="print">
+	@import "<TMPL_VAR NAME=web_root>/styles/print.css";	
+	</style>
+	<script type="text/javascript" src="<TMPL_VAR NAME=web_root>/javascript/racklib.js"></script>
+	<link rel="icon" href="<TMPL_VAR NAME=web_root>/graphics/favicon.ico" />
+</head>
+<body>
+	<TMPL_INCLUDE NAME="nav-report.ssi">
+	<div id="main">
+	  <p id="report_nav">
+			<strong>Reports Index</strong> |
+			<a href="<TMPL_VAR NAME=base_url>?view=report&amp;view_type=counts">Device Counts</a> |
+			<a href="<TMPL_VAR NAME=base_url>?view=report&amp;view_type=duplicates">Duplicates</a>
+		</p>
+		<h2>RackMonkey Reports</h2>
+		<h3>Rack &amp; Device Summary</h3>
+		<ul>
+			<li>There are <TMPL_VAR ESCAPE=HTML NAME=rack_count> <a href="<TMPL_VAR NAME=base_url>?view=rack">racks</a> with a total size of <TMPL_VAR NAME=total_rack_space> U</li>
+			<li>There are a total of <TMPL_VAR ESCAPE=HTML NAME=device_count> <a href="<TMPL_VAR NAME=base_url>?view=device">devices</a></li>
+			<li>There are <TMPL_VAR ESCAPE=HTML NAME=unracked_device_count> <a href="<TMPL_VAR NAME=base_url>?view=device&amp;view_type=default_unracked">unracked</a> devices</li>
+			<li>There are <TMPL_VAR ESCAPE=HTML NAME=racked_device_count> racked devices using a total of <TMPL_VAR NAME=used_rack_space> U</li>
+			<li>There is <TMPL_VAR ESCAPE=HTML NAME=free_rack_space> U of free space in the racks</li>
+		</ul>
+		
+		<h3>Detailed Reports</h3>
+		<ul>
+		  <li><a href="<TMPL_VAR NAME=base_url>?view=report&amp;view_type=counts">Device Counts by Customer, Role, Hardware and OS</a></li>
+		  <li><a href="<TMPL_VAR NAME=base_url>?view=report&amp;view_type=duplicates">Duplicate Serials, Assets and OS Licence Keys</a></li>
+		</ul>
+	</div>
+	<TMPL_INCLUDE NAME="footer.ssi">
+</body>
+</html>

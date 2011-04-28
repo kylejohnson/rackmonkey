@@ -1,0 +1,20 @@
+<!-- service level edit include: Version 1.2.5-1 -->
+						<div>
+							<label for="name">Name</label><br />
+							<input id="name" name="name" type="text" size="60" value="<TMPL_VAR ESCAPE=HTML NAME=name>" />
+						</div>
+						<div>
+							<label for="descript">Description</label><br />
+							<textarea id="descript" name="descript" cols="55" rows="4"><TMPL_VAR ESCAPE=HTML NAME=descript></textarea>
+						</div>
+						<div>
+							<label for="notes">Notes [<a onclick="showNotesStyleKey();" href="#">show style syntax</a>]</label><br />
+							<textarea id="notes" name="notes" cols="55" rows="4"><TMPL_VAR ESCAPE=HTML NAME=notes></textarea>
+							<p id="notes_style_key">
+								<strong>Notes Style Syntax</strong><br/>
+								Emphasis: **example** = <em>example</em><br/>
+								Strong: ***example*** = <strong>example</strong><br/>
+								Link: [http://www.example.com|example link] = <a href="http://www.example.com">example link</a>
+							</p>
+						</div>
+						<!-- end of service level edit include -->

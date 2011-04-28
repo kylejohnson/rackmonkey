@@ -1,0 +1,110 @@
+<!-- device edit include: Version 1.2.5-1 -->
+            <script type="text/javascript">
+              // create an array of hardware model IDs and names for each manufacturer: this will likely use ajax in a later release
+              var hardwareModelIDs = new Array;
+              var hardwareModelNames = new Array;
+
+              <TMPL_LOOP NAME=modelList>
+                hardwareModelIDs[<TMPL_VAR ESCAPE=HTML NAME=maufacturer_id>] = new Array;
+                hardwareModelNames[<TMPL_VAR ESCAPE=HTML NAME=maufacturer_id>] = new Array; <TMPL_LOOP NAME=models>
+                  hardwareModelIDs[<TMPL_VAR ESCAPE=HTML NAME=maufacturer_id>].push(<TMPL_VAR ESCAPE=HTML NAME=id>);
+                  hardwareModelNames[<TMPL_VAR ESCAPE=HTML NAME=maufacturer_id>].push('<TMPL_VAR ESCAPE=HTML NAME=name>');</TMPL_LOOP>
+              </TMPL_LOOP>
+            </script>
+            <div>
+							<div style="width: 50%; float: left">
+								<label for="name">Name</label><br />
+								<input type="text" size="32" id="name" name="name" value="<TMPL_VAR ESCAPE=HTML NAME=name>" />
+							</div>
+							<div>
+								<label for="domain">Domain</label><br />
+								<select id="domain" name="domain"><TMPL_LOOP NAME=domainlist>
+									<option <TMPL_IF NAME=selected>selected="selected"</TMPL_IF> value="<TMPL_VAR ESCAPE=HTML NAME=id>"><TMPL_VAR ESCAPE=HTML NAME=name></option></TMPL_LOOP>
+								</select>
+							</div>
+						</div>
+						<hr style="clear: both;" />
+						<div>
+							<label for="rack">Location</label><br />
+							Rack Position &nbsp; <input type="text" size="4" name="rack_pos" value="<TMPL_IF NAME=rack_pos><TMPL_VAR ESCAPE=HTML NAME=rack_pos></TMPL_IF>" /> &nbsp; in &nbsp; 
+							<select id="rack" name="rack"><TMPL_LOOP NAME=racklist>
+								<option <TMPL_IF NAME=selected>selected="selected" </TMPL_IF>value="<TMPL_VAR ESCAPE=HTML NAME=id>"><TMPL_VAR ESCAPE=HTML NAME=name></option></TMPL_LOOP>
+							</select>
+						</div>
+						<hr style="clear: both" />
+						<div>
+							<div style="width: 50%; float: left">
+								<label for="hardware_manufacturer">Manufacturer</label><br />
+								<select id="hardware_manufacturer" name="hardware_manufacturer" onchange="populateHardwareModels()"><TMPL_LOOP NAME=manufacturerlist>
+									<option <TMPL_IF NAME=selected>selected="selected" </TMPL_IF>value="<TMPL_VAR ESCAPE=HTML NAME=id>"><TMPL_VAR ESCAPE=HTML NAME=name></option></TMPL_LOOP>
+								</select>
+							</div>
+							<div>
+							  <label for="hardware_model">Hardware Model</label><br />
+								<select id="hardware_model" name="hardware_model">
+								  <option value="-1">Dummy Option</option> <!-- Replaced by JavaScript -->
+								</select>
+						  </div>
+						</div>
+						<div style="clear: both">
+							<div style="width: 50%; float: left">
+								<label for="os">OS / Version</label><br />
+								<select id="os" name="os"><TMPL_LOOP NAME=oslist>
+									<option <TMPL_IF NAME=selected>selected="selected" </TMPL_IF>value="<TMPL_VAR ESCAPE=HTML NAME=id>"><TMPL_VAR ESCAPE=HTML NAME=name></option></TMPL_LOOP>
+								</select>
+								<input type="text" size="8" name="os_version" value="<TMPL_VAR ESCAPE=HTML NAME=os_version>" />
+							</div>
+							<div>
+								<label for="os_licence_key">OS Licence Key</label><br />
+								<input id="os_licence_key" name="os_licence_key" type="text" size="32" value="<TMPL_VAR ESCAPE=HTML NAME=os_licence_key>" />
+							</div>
+						</div>
+						<div style="clear: both">
+							<div style="width: 50%; float: left;">
+								<label for="role">Role</label><br />
+								<select id="role" name="role"><TMPL_LOOP NAME=rolelist>
+									<option <TMPL_IF NAME=selected>selected="selected" </TMPL_IF>value="<TMPL_VAR ESCAPE=HTML NAME=id>"><TMPL_VAR ESCAPE=HTML NAME=name></option></TMPL_LOOP>
+								</select>
+								<input type="checkbox" name="in_service" id="in_service" <TMPL_IF NAME=in_service>checked="checked" </TMPL_IF>/> <label for="in_service">In Service</label>
+							</div>
+							<div>
+								<label for="purchased">Purchased (YYYY-MM-DD)</label><br />
+								<input id="purchased" type="text" size="11" name="purchased" value="<TMPL_VAR ESCAPE=HTML NAME=purchased>" />
+							</div>
+						</div>
+						<div style="clear: both;">
+							<div style="width: 50%; float: left;">
+								<label for="serial_no">Serial Number</label><br />
+								<input id="serial_no" name="serial_no" type="text" size="32" value="<TMPL_VAR ESCAPE=HTML NAME=serial_no>" />
+							</div>
+							<div>
+								<label for="asset_no">Asset Number</label><br />
+								<input id="asset_no" name="asset_no" type="text" size="32" value="<TMPL_VAR ESCAPE=HTML NAME=asset_no>" />
+							</div>
+						</div>
+						<div style="clear: both;">
+							<div style="width: 50%; float: left;">
+								<label for="customer">Customer</label><br />
+								<select id="customer" name="customer"><TMPL_LOOP NAME=customerlist>
+									<option <TMPL_IF NAME=selected>selected="selected"</TMPL_IF> value="<TMPL_VAR ESCAPE=HTML NAME=id>"><TMPL_VAR ESCAPE=HTML NAME=name></option></TMPL_LOOP>
+								</select>
+							</div>
+							<div>
+								<label for="service">Service Level</label><br />
+								<select id="service" name="service"><TMPL_LOOP NAME=servicelist>
+									<option <TMPL_IF NAME=selected>selected="selected"</TMPL_IF> value="<TMPL_VAR ESCAPE=HTML NAME=id>"><TMPL_VAR ESCAPE=HTML NAME=name></option></TMPL_LOOP>
+								</select>
+							</div>
+						</div>
+						<hr style="clear: both"/>
+						<div>
+							<label for="notes">Notes [<a onclick="showNotesStyleKey();" href="#">show style syntax</a>]</label><br />
+							<textarea id="notes" name="notes" cols="55" rows="4"><TMPL_VAR ESCAPE=HTML NAME=notes></textarea>
+							<p id="notes_style_key">
+								<strong>Notes Style Syntax</strong><br/>
+								Emphasis: **example** = <em>example</em><br/>
+								Strong: ***example*** = <strong>example</strong><br/>
+								Link: [http://www.example.com|example link] = <a href="http://www.example.com">example link</a>
+							</p>
+						</div>
+						<!-- end of device edit include -->

@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!-- 
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# Help default template                                                      #
+##############################################################################
+-->
+<head>
+	<title>Getting Support | RackMonkey</title>
+	<style type="text/css" media="all">
+	@import "<TMPL_VAR NAME=web_root>/styles/main.css";
+	@import "<TMPL_VAR NAME=web_root>/styles/tabs.css";
+	@import "<TMPL_VAR NAME=web_root>/styles/help.css";
+	</style>
+	<style type="text/css" media="print">
+	@import "<TMPL_VAR NAME=web_root>/styles/print.css";	
+	</style>
+	<script type="text/javascript" src="<TMPL_VAR NAME=web_root>/javascript/racklib.js"></script>
+	<link rel="icon" href="<TMPL_VAR NAME=web_root>/graphics/favicon.ico" />
+</head>
+<body>
+	<TMPL_INCLUDE NAME="nav-help.ssi">
+	<div id="main">
+		<p id="help_nav">
+			<a href="<TMPL_VAR NAME=base_url>?view=help">Help Overview</a> |
+			<a href="<TMPL_VAR NAME=base_url>?view=help&amp;view_type=user">User Guide</a> |
+			<a href="<TMPL_VAR NAME=base_url>?view=help&amp;view_type=admin">Admin Guide</a> |
+			<a href="<TMPL_VAR NAME=base_url>?view=help&amp;view_type=errors">Error Messages</a> |	
+			<a href="http://www.rackmonkey.org/doc/1.2.5">Docs (online)</a> |
+			<a href="http://www.rackmonkey.org/faq">FAQ (online)</a> |
+			<a href="http://www.rackmonkey.org/issues">Bugs &amp; Issues (online)</a> |
+			<strong>Getting Support</strong> |
+			<a href="<TMPL_VAR NAME=base_url>?view=help&amp;view_type=legal">Legal</a>
+		</p>
+		<h2>Getting Support</h2>
+		<p>Be sure to read the <strong>Troubleshooting</strong> document (included as doc/troubleshooting.txt the RackMonkey download). 
+			You should also consult the <a href="http://www.rackmonkey.org/faq">Online FAQ</a> and the 
+			<a href="http://www.rackmonkey.org/issues">Online errata, issues and bugs</a> to see if you're experiencing a known problem.
+			If none of this helps you can submit support requests via the <a href="http://www.rackmonkey.org/support">RackMonkey web site</a>.
+		</p>
+		<p>		
+			You should also join the RackMonkey
+			<a href="http://www.rackmonkey.org/announce-list" title="Subscribe to the RackMonkey announce list">announce list</a>
+			to hear about new release and major bugs.
+		</p>
+	</div>
+	<TMPL_INCLUDE NAME="footer.ssi">
+</body>
+</html>

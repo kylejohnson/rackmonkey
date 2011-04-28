@@ -1,0 +1,78 @@
+/*
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# CSS styling for navigation tabs - with thanks to labs.silverorange.com     #
+##############################################################################
+*/
+
+#navbar 
+{
+	position: relative;
+	height: 2.7em;
+	border-bottom: 1px solid black;
+	background: #DDD;
+}
+
+#navlogo
+{
+	margin-left: 0.8em;
+	margin-top: 0.5em;
+	border: none;
+}
+
+#navbar ul 
+{
+	margin: 0 0 0 4.5em;
+	margin-right: 0;
+	padding: 0;
+	position: absolute;
+	bottom: -1px;
+}
+
+#navbar ul li  
+{
+	display: inline;
+	list-style: none;
+}
+
+#navbar ul a,
+#navbar ul a.selected 
+{
+	width: 5.5em;
+	display: block;
+	float: left;
+	padding: 5px 0;
+	margin: 1px 2px 0 0;
+	text-align: center;
+	font-family: helvetica, sans-serif;
+	font-weight: bold;
+	font-size: 85%;
+	text-decoration: none;
+	color: #333;
+}
+
+#navbar ul a.selected
+{
+	border: 1px solid #666;
+	border-bottom: none;
+	background: white;
+	padding-bottom: 7px;
+	margin-top: 0;
+}
+
+#navbar ul a.unselected 
+{
+	background: #FFFAE1;
+	border: 1px solid #AAA;
+	border-bottom: none;
+}
+
+#navbar ul a.unselected:hover 
+{
+	margin-top: 0;
+	border-color: #666;
+	background: #FFF7CD;
+	padding-bottom: 6px;
+}

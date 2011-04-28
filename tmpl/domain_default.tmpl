@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!-- 
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# Domain default (table) template                                            #
+##############################################################################
+-->
+<head>
+	<title>Domains | RackMonkey</title>
+	<style type="text/css" media="all">
+	@import "<TMPL_VAR NAME=web_root>/styles/main.css";
+	@import "<TMPL_VAR NAME=web_root>/styles/tabs.css";
+	@import "<TMPL_VAR NAME=web_root>/styles/itemtable.css";
+	</style>
+	<style type="text/css" media="print">
+	@import "<TMPL_VAR NAME=web_root>/styles/print.css";	
+	</style>
+	<script type="text/javascript" src="<TMPL_VAR NAME=web_root>/javascript/racklib.js"></script>
+	<link rel="icon" href="<TMPL_VAR NAME=web_root>/graphics/favicon.ico" />
+</head>
+<body>
+	<TMPL_INCLUDE NAME="nav-config.ssi">
+	<div id="main">
+		<table class="itemtable">
+			<tr>
+				<th colspan="3">
+					<a title="Create a new domain" onclick="window.location = '<TMPL_VAR NAME=base_url>?view=domain&amp;view_type=create'; return false;"><img class="create" src="<TMPL_VAR NAME=web_root>/graphics/icons/add.png" width="14" height="14" alt=""/></a>
+					<a title="Sort by name" href="<TMPL_VAR NAME=base_url>?view=domain&amp;order_by=domain.name">Domain</a>
+				</th>
+				<th><a title="Sort by description" href="<TMPL_VAR NAME=base_url>?view=domain&amp;order_by=domain.descript">Description</a></th>	
+				<th><a title="Sort by notes" href="<TMPL_VAR NAME=base_url>?view=domain&amp;order_by=domain.notes">Notes</a></th>		
+			</tr>
+			<TMPL_IF NAME=domains>
+			<TMPL_LOOP NAME=domains>
+			<TMPL_IF NAME="__odd__"><tr class="odd"><TMPL_ELSE><tr class="even"></TMPL_IF>
+					<td class="item_name"><a title="View details for this domain" href="<TMPL_VAR NAME=base_url>?view=domain&amp;view_type=single&amp;id=<TMPL_VAR ESCAPE=URL NAME=id>"><TMPL_VAR ESCAPE=HTML NAME=name></a></td>
+					<td class="item_edit"><a title="Edit domain '<TMPL_VAR ESCAPE=HTML NAME=name>'" href="<TMPL_VAR NAME=base_url>?view=domain&amp;view_type=edit&amp;id=<TMPL_VAR ESCAPE=URL NAME=id>"><img style="float: left; border: none" src="<TMPL_VAR NAME=web_root>/graphics/icons/pencil.png" width="14" height="14" alt=""/></a></td>
+					<td class="item_delete"><a onclick="return confirmDel('<TMPL_VAR ESCAPE=HTML NAME=name>')" title="Delete domain '<TMPL_VAR ESCAPE=HTML NAME=name>'" href="<TMPL_VAR NAME=base_url>?view=domain&amp;act=delete&amp;act_on=domain&amp;act_id=<TMPL_VAR ESCAPE=URL NAME=id>"><img style="float: left; border: none" src="<TMPL_VAR NAME=web_root>/graphics/icons/delete.png" width="14" height="14" alt=""/></a></td>
+				<td><TMPL_IF NAME=descript_short><span title="<TMPL_VAR ESCAPE=HTML NAME=descript>"><TMPL_VAR ESCAPE=HTML NAME=descript_short></span><TMPL_ELSE><TMPL_IF NAME=descript><TMPL_VAR ESCAPE=HTML NAME=descript><TMPL_ELSE>-</TMPL_IF></TMPL_IF></td>
+				<td><TMPL_IF NAME=notes_short><span title="<TMPL_VAR NAME=notes>"><TMPL_VAR NAME=notes_short></span><TMPL_ELSE><TMPL_IF NAME=notes><TMPL_VAR NAME=notes><TMPL_ELSE>-</TMPL_IF></TMPL_IF></td>
+			</tr>
+			</TMPL_LOOP></TMPL_IF>
+			<tr>
+				<td colspan="5" class="footer">
+					Showing <TMPL_VAR ESCAPE=HTML NAME=listed_domain_count> of <TMPL_VAR ESCAPE=HTML NAME=total_domain_count> domains
+				</td>
+			</tr>
+		</table>
+	</div>
+	<TMPL_INCLUDE NAME="footer.ssi">
+</body>
+</html>	

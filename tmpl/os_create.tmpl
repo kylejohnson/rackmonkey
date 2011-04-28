@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!-- 
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# OS create template                                                         #
+##############################################################################
+-->
+<head>
+	<title>Create Operating System | RackMonkey</title>
+	<style type="text/css" media="all">
+	@import "<TMPL_VAR NAME=web_root>/styles/main.css";
+	@import "<TMPL_VAR NAME=web_root>/styles/tabs.css";
+	@import "<TMPL_VAR NAME=web_root>/styles/form.css";
+	</style>
+	<style type="text/css" media="print">
+	@import "<TMPL_VAR NAME=web_root>/styles/print.css";	
+	</style>
+	<script type="text/javascript" src="<TMPL_VAR NAME=web_root>/javascript/racklib.js"></script>
+	<link rel="icon" href="<TMPL_VAR NAME=web_root>/graphics/favicon.ico" />
+</head>
+<body>
+	<TMPL_INCLUDE NAME="nav-config.ssi">
+	<div id="main">
+		<form method="post" action="<TMPL_VAR NAME=base_url>">
+			<table class="form">
+				<tr>
+					<th><span class="title">Create Operating System</span></th>
+				</tr>
+				<tr>
+					<td>
+						<TMPL_INCLUDE NAME="os-edit.ssi">
+					</td>
+				</tr>
+				<tr>
+					<td id="hidden_fields" class="footer">
+						<input type="hidden" name="view" value="<TMPL_VAR ESCAPE=HTML NAME=return_view>" />
+						<TMPL_IF NAME=return_view_type>
+						<input type="hidden" name="view_type" value="<TMPL_VAR ESCAPE=HTML NAME=return_view_type>" />
+						<input type="hidden" name="id" value="<TMPL_VAR ESCAPE=HTML NAME=return_view_id>" />
+						</TMPL_IF>
+						<input type="hidden" name="act" value="insert" />
+						<input type="hidden" name="act_on" value="os" />
+						<button style="float: left" title="Cancel creating this operating system" onclick="window.location = '<TMPL_VAR NAME=base_url>?view=<TMPL_VAR ESCAPE=URL NAME=return_view><TMPL_IF NAME=return_view_type>&amp;view_type=<TMPL_VAR ESCAPE=URL NAME=return_view_type>&amp;id=<TMPL_VAR ESCAPE=URL NAME=return_view_id></TMPL_IF>'; return false;">Cancel</button>
+						<button style="float: right" title="Save this operating system" type="submit">Save</button>
+						&nbsp;
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<TMPL_INCLUDE NAME="footer.ssi">
+</body>
+</html>

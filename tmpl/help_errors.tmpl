@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!-- 
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# Help default template                                                      #
+##############################################################################
+-->
+<head>
+	<title>Error Messages | RackMonkey Help</title>
+	<style type="text/css" media="all">
+	@import "<TMPL_VAR NAME=web_root>/styles/main.css";
+	@import "<TMPL_VAR NAME=web_root>/styles/tabs.css";
+	@import "<TMPL_VAR NAME=web_root>/styles/help.css";
+	</style>
+	<style type="text/css" media="print">
+	@import "<TMPL_VAR NAME=web_root>/styles/print.css";	
+	</style>
+	<script type="text/javascript" src="<TMPL_VAR NAME=web_root>/javascript/racklib.js"></script>
+	<link rel="icon" href="<TMPL_VAR NAME=web_root>/graphics/favicon.ico" />
+</head>
+<body>
+	<TMPL_INCLUDE NAME="nav-help.ssi">
+	<div id="main">
+		<p id="help_nav">
+			<a href="<TMPL_VAR NAME=base_url>?view=help">Help Overview</a> |
+			<a href="<TMPL_VAR NAME=base_url>?view=help&amp;view_type=user">User Guide</a> |
+			<a href="<TMPL_VAR NAME=base_url>?view=help&amp;view_type=admin">Admin Guide</a> |
+			<strong>Error Messages</strong> |	
+			<a href="http://www.rackmonkey.org/doc/1.2.5">Docs (online)</a> |
+			<a href="http://www.rackmonkey.org/faq">FAQ (online)</a> |
+			<a href="http://www.rackmonkey.org/issues">Bugs &amp; Issues (online)</a> |
+			<a href="<TMPL_VAR NAME=base_url>?view=help&amp;view_type=getting_support">Getting Support</a> |
+			<a href="<TMPL_VAR NAME=base_url>?view=help&amp;view_type=legal">Legal</a>
+		</p>
+		<h2>Error Messages</h2>
+		<p>
+		  This page provides more detail on some of error messages RackMonkey reports. For errors with initial set up or 
+		  databases, please consult troubleshooting.txt file included with RackMonkey.
+		  For general information on using RackMonkey see <a href="<TMPL_VAR NAME=base_url>?view=help">Help Overview</a>.
+		</p>
+		<ul>
+			<li><a href="#couldnt_create_entry_name_is_not_unique">Couldn't Create Entry: Name is not Unique</a></li>
+			<li><a href="#couldnt_open_template">Couldn't Open Template</a></li>
+			<li><a href="#delete_violates_data_integrity_check">Delete Violates Data Integrity Check</a></li>
+		</ul>
+
+		<h3 class="error"><a id="couldnt_create_entry_name_is_not_unique">Couldn't Create Entry: Name is not Unique</a></h3>
+		<p class="error">
+			RackMonkey requires that a item must have a unique name, for example you cannot two organisations called 'Acme Industries'.
+			For devices, you can use the same name, provided the domains are different. For example, you can have a device called 'www' with a domain of 'rackmonkey.org' and a device called 'www' with a domain of 'ibm.com'. Similarly, you can have locations with the same name, provided they are in different container locations.
+			For example, you can have two rooms called 'dc1' if they're in different buildings.
+		</p>
+		
+		<h3 class="error"><a id="couldnt_open_template">Couldn't Open Template</a></h3>
+		<p class="error">
+			RackMonkey was unable to open the template for the required view type. This usually means either: the path to the templates (specified by 'tmplpath' in rackmonkey.conf) is wrong or that the view_type parameter in the URL is incorrect. The latter may occur if you manually typed in the URL.
+		</p>
+
+		<h3 class="error"><a id="delete_violates_data_integrity_check">Delete Violates Data Integrity Check</a></h3>
+		<p class="error">
+			RackMonkey is careful to ensure the integrity of your data. For example, if you put server 'www.foo.com' in a rack 'A1' you cannot delete rack 'A1' until you remove the server from it.
+			Another example, if 'www.foo.com' has a customer of 'Acme Industries' then you cannot delete 'Acme Industries'.
+			To solve this problem, edit or delete all the items using the thing you wish to delete so they no longer refer to it, then try your delete again.
+		</p>
+	</div>
+	<TMPL_INCLUDE NAME="footer.ssi">
+</body>
+</html>

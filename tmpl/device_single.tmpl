@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!-- 
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# Device single view template                                                #
+##############################################################################
+-->
+<head>
+	<title><TMPL_VAR ESCAPE=HTML NAME=name><TMPL_UNLESS NAME=domain_meta_default_data>.<TMPL_VAR ESCAPE=HTML NAME=domain_name></TMPL_UNLESS> | RackMonkey</title>
+	<style type="text/css" media="all">
+	@import "<TMPL_VAR NAME=web_root>/styles/main.css";
+	@import "<TMPL_VAR NAME=web_root>/styles/tabs.css";
+	@import "<TMPL_VAR NAME=web_root>/styles/form.css";
+	</style>
+	<style type="text/css" media="print">
+	@import "<TMPL_VAR NAME=web_root>/styles/print.css";	
+	</style>
+	<script type="text/javascript" src="<TMPL_VAR NAME=web_root>/javascript/racklib.js"></script>
+	<link rel="icon" href="<TMPL_VAR NAME=web_root>/graphics/favicon.ico" />
+</head>
+<body>
+	<TMPL_INCLUDE NAME="nav-device.ssi">
+	<div id="main">
+		<table class="form">
+			<tr>
+				<th>
+					<button style="float: right; margin-top: -2px" title="View all devices" onclick="window.location = '<TMPL_VAR NAME=base_url>?view=device&amp;view_type=default'; return false;">View All</button>
+					<button style="float: right; margin-right: 4px; margin-top: -2px" title="Create a new device based on this one" onclick="window.location = '<TMPL_VAR NAME=base_url>?view=device&amp;view_type=create&amp;id=<TMPL_VAR ESCAPE=URL NAME=id>'; return false;">Copy Device</button>	
+					<button style="float: right; margin-right: 4px; margin-top: -2px" title="Create a new device" onclick="window.location = '<TMPL_VAR NAME=base_url>?view=device&amp;view_type=create'; return false;">New Device</button>
+					<span class="title">Devices</span>
+				</th>
+			</tr>
+			<tr>
+				<td>
+					<div>
+						<div class="key">Name</div>
+						<div class="value"><TMPL_VAR ESCAPE=HTML NAME=name><TMPL_UNLESS NAME=domain_meta_default_data>.<TMPL_VAR ESCAPE=HTML NAME=domain_name></TMPL_UNLESS><TMPL_IF NAME=rackdns_url>&nbsp; <a class="small" title="Query DNS records for this name" href="<TMPL_VAR NAME=rackdns_url>?query_on=<TMPL_VAR ESCAPE=URL NAME=name><TMPL_UNLESS NAME=domain_meta_default_data>.<TMPL_VAR ESCAPE=URL NAME=domain_name></TMPL_UNLESS>">Query DNS&hellip;</a></TMPL_IF></div>
+					</div>
+					<hr />
+					<div>
+						<div class="key">Location</div>
+						<div class="value"><TMPL_VAR ESCAPE=HTML NAME=rack_name><TMPL_UNLESS NAME=building_meta_default_data> [<TMPL_VAR ESCAPE=HTML NAME=rack_pos>] - <TMPL_VAR ESCAPE=HTML NAME=room_name> in <TMPL_VAR ESCAPE=HTML NAME=building_name> &nbsp; <a class="small" title="View device in rack" href="<TMPL_VAR NAME=base_url>?view=rack&amp;view_type=physical&amp;id=<TMPL_VAR ESCAPE=URL NAME=rack>&amp;device_id=<TMPL_VAR ESCAPE=URL NAME=id>">View in rack&hellip;</a><TMPL_ELSE>&nbsp; <a class="small" title="View unracked devices" href="<TMPL_VAR NAME=base_url>?view=device&amp;view_type=default_unracked">View all unracked devices&hellip;</a></TMPL_UNLESS></div>
+					</div>
+					<hr />
+					<div>
+						<div style="width: 50%; float:left">
+							<div class="key">Manufacturer</div>
+							<div class="value"><TMPL_UNLESS NAME=hardware_meta_default_data><TMPL_UNLESS NAME=hardware_manufacturer_meta_default_data><TMPL_VAR ESCAPE=HTML NAME=hardware_manufacturer_name> </TMPL_UNLESS> &nbsp; <a class="small" title="View details for this manufacturer" href="<TMPL_VAR NAME=base_url>?view=org&amp;view_type=single&amp;id=<TMPL_VAR ESCAPE=URL NAME=hardware_manufacturer_id>">Details&hellip;</a><TMPL_ELSE><TMPL_VAR ESCAPE=HTML NAME=hardware_manufacturer_name></TMPL_UNLESS></div>
+						</div>
+						<div>
+							<div class="key">Hardware Model (Size)</div>
+							<div class="value"><TMPL_VAR ESCAPE=HTML NAME=hardware_name> (<TMPL_VAR ESCAPE=HTML NAME=hardware_size>U)<TMPL_UNLESS NAME=hardware_meta_default_data> &nbsp; <a class="small" title="View details for this hardware" href="<TMPL_VAR NAME=base_url>?view=hardware&amp;view_type=single&amp;id=<TMPL_VAR ESCAPE=URL NAME=hardware>">Details&hellip;</a></TMPL_UNLESS></div>
+						</div>
+					</div>
+					<div style="clear:both">
+						<div style="width: 50%; float:left">
+							<div class="key">Operating System</div>
+							<div class="value"><TMPL_VAR ESCAPE=HTML NAME=os_name><TMPL_IF NAME=os_version> <TMPL_VAR ESCAPE=HTML NAME=os_version></TMPL_IF><TMPL_UNLESS NAME=os_meta_default_data> &nbsp; <a class="small" title="View details for this operating system" href="<TMPL_VAR NAME=base_url>?view=os&amp;view_type=single&amp;id=<TMPL_VAR ESCAPE=URL NAME=os>">Details&hellip;</a></TMPL_UNLESS></div>
+						</div>
+						<div>
+							<div class="key">OS Licence Key</div>
+							<div class="value"><TMPL_IF NAME=os_licence_key><TMPL_VAR ESCAPE=HTML NAME=os_licence_key><TMPL_ELSE>&nbsp;-</TMPL_IF></div>
+						</div>
+					</div>
+					<div style="clear:both">
+						<div style="width: 50%; float:left">
+							<div class="key">Role (In Service)</div>
+							<div class="value"><TMPL_VAR ESCAPE=HTML NAME=role_name>  (<input disabled="disabled" type="checkbox" <TMPL_IF NAME=in_service>checked="checked"</TMPL_IF> />)<TMPL_UNLESS NAME=role_meta_default_data> &nbsp; <a class="small" title="View details for this role" href="<TMPL_VAR NAME=base_url>?view=role&amp;view_type=single&amp;id=<TMPL_VAR ESCAPE=URL NAME=role>">Details&hellip;</a></TMPL_UNLESS></div>
+						</div>
+						<div>
+							<div class="key">Purchased (Age)</div>
+							<div class="value"><TMPL_IF NAME=purchased><TMPL_VAR ESCAPE=HTML NAME=purchased><TMPL_IF NAME=age>&nbsp;&nbsp;(<TMPL_VAR ESCAPE=HTML NAME=age> years)</TMPL_IF><TMPL_ELSE>unknown</TMPL_IF></div>
+						</div>
+					</div>
+					<div style="clear:both">
+						<div style="width: 50%; float:left">
+							<div class="key">Serial Number</div>
+							<div class="value"><TMPL_IF NAME=serial_no><TMPL_VAR ESCAPE=HTML NAME=serial_no><TMPL_IF NAME=dell_query> &nbsp; <a class="small" href="<TMPL_VAR ESCAPE=HTML NAME=dell_query><TMPL_VAR ESCAPE=URL NAME=serial_no>">Query Dell&hellip;</a></TMPL_IF><TMPL_ELSE>&nbsp;-</TMPL_IF></div>
+						</div>
+						<div>
+							<div class="key">Asset Number</div>
+							<div class="value"><TMPL_IF NAME=asset_no><TMPL_VAR ESCAPE=HTML NAME=asset_no><TMPL_ELSE>&nbsp;-</TMPL_IF></div>
+						</div>
+					</div>
+					<div style="clear:both">
+						<div style="width: 50%; float:left">
+							<div class="key">Customer</div>
+							<div class="value"><TMPL_VAR ESCAPE=HTML NAME=customer_name><TMPL_UNLESS NAME=customer_meta_default_data> &nbsp; <a class="small" title="View details for this customer" href="<TMPL_VAR NAME=base_url>?view=org&amp;view_type=single&amp;id=<TMPL_VAR ESCAPE=URL NAME=customer>">Details&hellip;</a></TMPL_UNLESS></div>
+						</div>	
+						<div>
+							<div class="key">Service Level</div>
+							<div class="value"><TMPL_VAR ESCAPE=HTML NAME=service_name><TMPL_UNLESS NAME=service_meta_default_data> &nbsp; <a class="small" title="View details for this service level" href="<TMPL_VAR NAME=base_url>?view=service&amp;view_type=single&amp;id=<TMPL_VAR ESCAPE=URL NAME=service>">Details&hellip;</a></TMPL_UNLESS></div>
+						</div>
+					</div><TMPL_IF NAME=apps>
+					<hr style="clear: both" />
+					<div>
+						<div class="key">Apps</div>
+						<div class="value">
+						<ul style="margin-top: 0px; padding-left: 1.5em">
+						<TMPL_LOOP NAME=apps>
+						<li>
+              <a title="View details for this app" href="<TMPL_VAR NAME=base_url>?view=app&amp;view_type=single&amp;id=<TMPL_VAR ESCAPE=URL NAME=app_id>"><TMPL_VAR ESCAPE=HTML NAME=app_name></a> <TMPL_VAR ESCAPE=HTML NAME=app_relation_name> this device.						  
+              <a onclick="return confirmDel('this association between <TMPL_VAR ESCAPE=HTML NAME=name> and <TMPL_VAR ESCAPE=HTML NAME=app_name>')" title="Delete this association between <TMPL_VAR ESCAPE=HTML NAME=name> and <TMPL_VAR ESCAPE=HTML NAME=app_name>" href="<TMPL_VAR NAME=base_url>?view=device&amp;view_type=single&amp;id=<TMPL_VAR ESCAPE=URL NAME=id>&amp;act=delete&amp;act_on=deviceApp&amp;act_id=<TMPL_VAR ESCAPE=HTML NAME=device_app_id>"><img style="border: none" src="<TMPL_VAR NAME=web_root>/graphics/icons/delete.png" width="14" height="14" alt=""/></a>
+						</li>
+						</TMPL_LOOP>
+					</ul>
+					</div>
+					</div></TMPL_IF><TMPL_IF NAME=notes>
+					<hr style="clear: both" />
+					<div>
+						<div class="key">Notes</div>
+						<div class="value"><TMPL_VAR NAME=notes></div>
+					</div></TMPL_IF>
+				</td>
+			</tr>
+			<tr>
+				<td class="footer">		
+					<TMPL_UNLESS NAME=meta_default_data><button style="float: left" title="Delete this device" onclick="if (confirmDel('<TMPL_VAR ESCAPE=HTML NAME=name>')) { window.location = '<TMPL_VAR NAME=base_url>?view=device&amp;view_type=default&amp;act=delete&amp;act_on=device&amp;act_id=<TMPL_VAR ESCAPE=URL NAME=id>'; return false; }">Delete</button></TMPL_UNLESS>
+					<button style="float: right" title="Edit this device" onclick="window.location = '<TMPL_VAR NAME=base_url>?view=device&amp;view_type=edit&amp;id=<TMPL_VAR ESCAPE=URL NAME=id>&amp;return_view_type=<TMPL_VAR ESCAPE=HTML NAME=view_type>&amp;return_view_id=<TMPL_VAR ESCAPE=HTML NAME=id>'; return false;">Edit</button>	
+					<span class="updated">Entry last updated by <TMPL_VAR ESCAPE=HTML NAME=meta_update_user> at <TMPL_VAR ESCAPE=HTML NAME=meta_update_time> GMT</span>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<TMPL_INCLUDE NAME="footer.ssi">
+</body>
+</html>

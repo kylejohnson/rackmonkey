@@ -1,0 +1,20 @@
+<!-- report nav bar include: Version 1.2.5-1 -->
+	<div id="navbar">
+		<div>
+			<a href="<TMPL_VAR NAME=base_url>"><img id="navlogo" width="33" height="23" src="<TMPL_VAR NAME=web_root>/graphics/logo.png" alt="Home"/></a>
+		</div>
+		<div>
+			<ul>
+				<li><a class="unselected" href="<TMPL_VAR NAME=base_url>?view=rack">Racks</a></li>
+				<li><a class="unselected" href="<TMPL_VAR NAME=base_url>?view=device">Devices</a></li>				
+				<li><a class="unselected" href="<TMPL_VAR NAME=base_url>?view=app">Apps</a></li>
+				<li><a class="unselected" href="<TMPL_VAR NAME=base_url>?view=config">Config</a></li>
+				<li><a class="selected" href="<TMPL_VAR NAME=base_url>?view=report">Reports</a></li>
+				<li><a class="unselected" href="<TMPL_VAR NAME=base_url>?view=help">Help</a></li>
+				<li><select onchange="rackSelect()" style="margin-left: 12px; margin-right: 0px; font-size: 0.8em;" id="rack_dropdown" name="rack_dropdown"><option value="0">View Rack&hellip;</option><TMPL_LOOP NAME=racknavlist>
+					<option <TMPL_IF NAME=selected>selected="selected"</TMPL_IF> value="<TMPL_VAR ESCAPE=HTML NAME=id>"><TMPL_VAR ESCAPE=HTML NAME=name></option></TMPL_LOOP>
+				</select></li>
+				<li><input onkeypress="if (pressedEnter(event)) nameSearch();" style="margin-left: 12px; margin-right: 0px; font-size: 0.8em;" type="text" name="name_search" id="name_search" size="12" value="<TMPL_VAR ESCAPE=HTML NAME=name_search>"/> <button onclick="nameSearch();">Find</button></li>			</ul>
+		</div>
+	</div>
+	<!-- end of report nav bar include -->

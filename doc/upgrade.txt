@@ -1,0 +1,320 @@
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# RackMonkey 1.2.5 Upgrade Guide                                             #
+##############################################################################
+
+You can read the latest version of this document in HTML format at:
+http://www.rackmonkey.org/doc/1.2.5
+
+
+Contents
+========
+1. Introduction  
+2. RackMonkey Files
+3. Install Dependancies
+4. Schema Update
+5. Configuring RackMonkey
+6. Upgrading the Application
+7. RackMonkey Plugins: Excel and DNS
+
+
+1. Introduction
+===============
+This document explains how to upgrade RackMonkey to 1.2.5. If you're doing a 
+fresh install, please see doc/install.txt instead. Upgrading is supported from 
+1.2.3 or higher. If you need to migrate from 1.2.2 or earlier, please
+upgrade to 1.2.3 first before performing this upgrade.
+
+Upgrading is straightforward: but there is a schema change. Ensure you take a 
+full backup of the RackMonkey database before upgrading.
+
+If you're upgrading from RackMonkey 1.2.3 you should note that there has been 
+a change in the way configuration is stored. Details are provided below.
+
+We recommend you disable access to the RackMonkey application during the 
+upgrade. You can do this by stopping the web server, password protecting it or 
+turning off the execute bit on rackmonkey.pl.
+
+Please note that the $ and # shown at the start of commands represent the 
+shell prompt, you should not type them.
+
+
+2. RackMonkey Files
+===================
+Once you have obtained a copy of RackMonkey (see README) you should have a
+directory with the following layout:
+
+    conf        RackMonkey and Apache configuration files
+    doc         Documentation for RackMonkey
+    perl        Perl scripts and modules
+    README      Read this first
+    sql         SQL to create the RackMonkey database
+    tmpl        Web interface templates
+    www         Web space files: images, CSS and JavaScript
+  
+
+3. Install Dependancies
+=======================
+RackMonkey 1.2.5 is the first release to officially support MySQL 5. The 
+minimum tested server version is 5.0.22.
+
+RackMonkey 1.2.5 has revised the versions of some required software:
+
+- DBI 1.45 or higher
+- For SQLite: DBD::SQLite 1.12 or higher
+- For Postgres: DBD::Pg 1.48 or higher
+- For MySQL DBD::mysql 3.0002 or higher
+
+RackMonkey tests for the presence of a supported perl modules when run, so you 
+will receive an error if you don't meet these requirements.
+
+RackMonkey now also requires the HTML::Entities perl module.
+
+The easiest way to install or upgrade modules is usually with the CPAN shell. 
+You generally need to be root in order to do this. 
+
+    # perl -eshell -MCPAN
+    
+On Mac OS X or Ubuntu Linux you can use sudo to temporarily become root (enter 
+your usual administrator password when prompted):
+
+    $ sudo perl -eshell -MCPAN
+
+Once the shell has started (you may be prompted to configure it):
+
+    install HTML::Entities
+    
+And similarly for any other modules you need to upgrade.
+    
+
+4. Schema Update
+================
+RackMonkey 1.2.5 includes significant schema changes from 1.2.4. The schema
+updates are handled by separate SQL script for each database engine. Together
+the updates take the schema from verion 2 to 4. If you  are updating from an 
+earlier 1.2.5 preview you only need to apply the schema version 4 update (you 
+should already be on version 3).
+
+To check which schema you are on you can run the following on your database:
+
+    SELECT name,value FROM rm_meta WHERE name = 'schema_version';
+
+The version 3 schema change drops the device_app table and recreates it. This 
+table wasn't used in prior releases, but if you manually added data to it you 
+will need to restore it from backup after the schema change.
+
+Each schema change is wrapped in a transaction, so if some statements fail 
+then the database will roll back and you can continue using your existing 
+release while you investigate the problem.
+
+BEFORE UPDATING THE SCHEMA BE SURE TO TAKE A FULL DATABASE BACKUP.
+
+
+Updating SQLite
+---------------
+Locate your SQLite database file (its location is specified in the RackMonkey 
+configuration). Run the following (replacing DATABASE_FILE with path to your 
+database) to move to schema version 3:
+
+ $ sqlite3 DATABASE_FILE < sql/migration/3/migration.sqlite.sql
+
+If the migration is successful you should see one line of output confirming
+you are on schema version 3:
+
+ schema_version|3
+
+If successful you can now move to schema version 4:
+
+ $ sqlite3 DATABASE_FILE < sql/migration/4/migration.sqlite.sql
+
+If the migration is successful you should see one line of output confirming
+you are on version 4:
+
+ schema_version|4
+ 
+
+Updating Postgres
+-----------------
+Assuming your Postgres database and Postgres users are both called 
+'rackmonkey' you need to run the following to move to schema version 3:
+
+ $ psql -U rackmonkey rackmonkey < sql/migration/3/migration.postgres.sql
+
+If the update was successful the output should finish with:
+
+        name      | value 
+  ----------------+-------
+   schema_version | 3
+
+You can safely ignore warnings of the form:
+ 
+ WARNING:  skipping "pg_authid" --- only table or database owner can vacuum it
+
+This warning just indicates the rackmonkey user doesn't have permissions to 
+vacuum system tables. 
+
+If successful you can now move to schema version 4:
+
+$ psql -U rackmonkey rackmonkey < sql/migration/4/migration.postgres.sql
+
+If the update was successful the output should finish with:
+
+        name      | value 
+  ----------------+-------
+   schema_version | 4
+  
+As before you can ignore the vacuum warnings. 
+
+
+Updating MySQL
+--------------
+Connect to your MySQL database as a user who can create and drop tables.
+
+Make sure you're connected to the RackMonkey database. Assuming you called it 'rackmonkey' you can do this with:
+
+ mysql> use rackmonkey;
+ 
+You can then run the version 3 schema update with:
+
+ mysql> \. sql/migration/3/schema.mysql.sql
+
+If the update was successful the output should finish with:
+
+  +----------------+-------+
+  | name           | value |
+  +----------------+-------+
+  | schema_version | 3     | 
+  +----------------+-------+
+
+If successful you can now move to schema version 4:
+
+ mysql> \. sql/migration/4/schema.mysql.sql
+
+If the update was successful the output should finish with:
+
+  +----------------+-------+
+  | name           | value |
+  +----------------+-------+
+  | schema_version | 4     | 
+  +----------------+-------+
+
+
+5. Configuring RackMonkey
+=========================
+If you're upgrading from 1.2.3 or earlier you need to follow this section. 
+1.2.4 users can skip on to the rack numbering heading towards the end of this 
+section.
+
+Creating a Text File Configuration
+----------------------------------
+RackMonkey 1.2.4 and later use a text file to store configuration 
+information, such as the database to use. Before continuing with the upgrade 
+process you should take a backup of RackMonkey/Conf.pm as this file is 
+completely replaced with a new module. You should now copy 
+conf/rackmonkey.conf-default to conf/rackmonkey.conf then use your existing 
+RackMonky/Conf.pm module to fill in the values. 
+
+Comments in the configuration file are included with the a #. Comments must
+either start a line or be preceded by whitespace. Values in the configuration
+file cannot include spaces and configuration variables are lower case:
+
+	Right: wwwpath = /rackmonkey/www
+	Wrong: WWWPATH = /rackmonkey system/www
+
+By default this file is read from /etc/rackmonkey.conf, if you're happy to put
+it there, simply copy your conf/rackmonkey.conf to /etc/rackmonkey.conf. If 
+you want to put this file in a different location you need to tell RackMonkey 
+where to look by using an environment variable. If you're using Apache you 
+should do this by adding the following line to your httpd.conf:
+
+	SetEnv RACKMONKEY_CONF /<path>/rackmonkey.conf
+	
+Replacing <path> with wherever you put the rackmonkey.conf. You should then 
+get apache to reload its configuration.
+
+On Debian and Ubuntu:
+	# /etc/init.d/apache2 force-reload
+
+On Red Hat based Linux systems (including CentOS and RHEL):
+	# service httpd reload
+	
+On Mac OS X 10.5 (Leopard):
+ 	$ sudo apachectl graceful
+
+On NetBSD:
+	# /etc/rc.d/apache reload
+	
+On other systems kill -HUP <apache_pid> will do the trick.
+
+Rack Numbering Direction
+------------------------
+RackMonkey now supports setting a default numbering direction for racks.
+If your racks are mostly numbered from the top, so unit 1 is highest in the
+rack, you should set the value of 'number_from_top' to 1 in rackmonkey.conf.
+Don't worry, you can still override this on a rack-by-rack basis.
+
+
+6. Upgrading the Application
+============================
+* Upgrade Templates: delete all the existing templates and copy the new
+  templates (from the tmpl directory) into the existing template directory.
+
+* Upgrade web content: delete all the existing web (www) content and copy the 
+  new content into the existing directory (maintaining the layout).
+
+* Upgrade docs: delete all the existing docs and copy the new content into
+  the existing docs with the new versions.
+
+* Upgrade code: delete the contents of the perl/RackMonkey directory then copy
+  the new perl/RackMonkey modules into the directory. Replace the copy of
+  bin/logdump with the new one. Finally, copy the new rackmonkey.pl script
+  over the existing one.
+
+NB. If running RackMonkey under mod_perl you must restart or HUP your mod_perl 
+instance. This ensures mod_perl reads the new modules.
+
+The upgrade is now complete and the updated RackMonkey is ready to use. If you
+experience any problems with the upgrade you should consult
+doc/troubleshooting.txt. 
+
+If you disabled access to RackMonkey prior to the upgrade (see section 1) you 
+should now re-enable it.
+
+
+7. RackMonkey Plugins: Excel and DNS
+====================================
+RackMonkey 1.2.5 includes two optional plugins for creating spreadsheets and 
+looking up DNS information.
+
+Excel Spreadsheet Export: rack2xls.pl
+-------------------------------------
+The current Excel spreadsheet export plugin can produce an Excel 97-2004 
+format spreadsheet that is readable by many applications including Microsoft 
+Excel for Windows and Mac, OpenOffice Calc and iWork NUmbers. At present the 
+plugin can only export a table of all devices, but further functionality will 
+appear in future releases.
+
+To use this plugin you need to install the Spreadsheet::WriteExcel Perl 
+module. If you're not sure how to do this see section 3 of this document.
+
+To enable the plugin, copy rack2xls.pl into the same directory as 
+rackmonkey.pl, make sure it's executable (chmod 755 usually does the trick)
+then uncomment the plugin_xls line in the RackMonkey configuration. You should 
+now find an 'Export XLS' button at the top of the device table views.
+
+DNS Queries: rackdns.pl
+-----------------------
+The DNS plugin is currently very basic. It performs a query for different 
+record types against a device name, but doesn't report errors.
+
+To use this plugin you need to install the Net::DNS Perl module. If you're not
+sure how to do this see section 3 of this document.
+
+To enable the plugin, copy rackdns.pl into the same directory as 
+rackmonkey.pl, make sure it's executable (chmod 755 usually does the trick)
+then uncomment the plugin_dns line in the RackMonkey configuration. You should 
+now find a 'Query DNS...' link next to the device name in single device  
+view. To see the single device view simply click on the name of a device in 
+the rack or device table views.

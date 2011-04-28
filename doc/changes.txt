@@ -1,0 +1,199 @@
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# RackMonkey Change Log                                                      #
+##############################################################################
+
+You can read the latest version of this document in HTML format at:
+http://www.rackmonkey.org/doc
+
+
+1.2.5-1 - Released 2009-09-14
+-----------------------------
+This is a minor release. It is not necessary to upgrade from 1.2.5 to 1.2.5-1.
+* Widened extended physical rack views to reduce wrapping
+* Minor corrections to documentation
+* Clarified need for JavaScript in installation instructions
+
+1.2.5 - Released 2009-07-05
+---------------------------
+* Several minor corrections to documentation
+* Fixed error in name of DBI package in Ubuntu installation instructions
+* Support for Safari 4 (no changes were required for this)
+* Added install instructions for RHEL/CentOS/Fedora
+* Tweaked form width in CSS to prevent controls wrapping on Firefox for some
+  Linux users
+
+1.2.5 Release Candidate 1 - Released 2009-06-05
+-----------------------------------------------
+* Completed 1.2.5 documentation
+* Returned the Dell query URL to the default config
+* Added meta_default data to default device_app data
+* Added experimental Ubuntu installation instructions
+* Several minor fixes to templates to validate as XHTML 1.1
+* Fixed note sorting in device views so it preserves filters
+* Added customer column to unracked device view
+* Out-of-service devices have a red tint in rack physical view
+* DNS plugin reports lookup failures in results
+* Improved validation of rack and hardware sizes and device positions
+* Several minor bug fixes (see svn log for full details)
+
+1.2.5 Preview 3 - Released 2009-05-23
+-------------------------------------
+* Full support for associating apps with devices
+* New report showing duplicate OS licence keys, serial and asset numbers
+* Changed notes fields in MySQL schema to be of type TEXT (allows more than
+  255 characters)
+* All updates now completed as one transaction for improved data integrity
+  For example, an update will only occur if the log table is updated correctly
+* Added MAC address and install build columns to device table to aid with
+  device identification and automated building e.g. Kickstart or Jumpstart
+  These fields aren't yet accessible through the GUI, but will be in 1.3.  
+* Added custom_info column to device table to allow the storage of free form
+  text data. Not exposed in GUI.
+* The default rack numbering direction is now configurable
+* All delete requests now have a confirmation pop-up
+* Requires DBI 1.45 or higher for all database engines
+* Requires DBD::Pg 1.48 or higher for Postgres
+  All database engines now have a tested minimum driver version
+* IE 8 now supported
+* Improved validation of submitted device information
+* Renamed methods entryBasic and listBasic to simpleItem and simpleList
+* SQL schemata migrations now work in Postgres 7.4
+* Size of 1U in rack diagrams can now be adjusted in rackmonkey.conf
+* Fixed a bug which prevented plugin URLs appearing in some circumstances
+
+1.2.5 Preview 2 - Released 2009-04-05
+-------------------------------------
+* Added ability to record OS licence key
+* Separated manufacturer and hardware model in device creation/editing
+* Improved database driver checks and reporting
+* Added instructions for upgrading to 1.2.5 from prior releases
+* Pod added to perl modules (still work in progress)
+* Fixed a bug with creating/editing rooms
+* Fixed handling of notes fields when truncated
+
+1.2.5 Preview 1 - Released 2009-03-15
+-------------------------------------
+* Many UI Improvements
+* Excel spreadsheet export
+* Print CSS for much better quality printouts
+* Official MySQL support
+* Numbering racks from the top as well as bottom
+* Basic support for associating apps with devices
+* Basic formatting of notes fields
+* Operating system licences
+* Device deletion in table and physical rack views
+* Experimental DNS plugin
+* RackMonkey is five years old today :)
+
+1.2.4 - Released 2008-07-20
+---------------------------
+* Minor tweaks to documentation
+
+1.2.4 RC1 - Released 2008-07-07
+-------------------------------
+* Added edit buttons to table views to make editing faster
+* Replaced tick character with checkbox as IE cannot render tick marks
+* Fixed a number of errors in the markup of templates: all pages now validate
+  with the W3C validator again
+* Sorting now works properly in search results
+* Improved the included sample data and added standard test data
+* Report now includes total size used for different device types
+* Made returning to an edit view after adding an item work as expected,
+   e.g. adding a new building while creating a room
+* Showing and hiding of domain in device table views now works and the setting
+   is saved in a cookie
+* Many documentation improvements
+* Tested on Firefox 3
+
+1.2.4 Preview 2 - Released 2008-05-18
+-------------------------------------
+* Improved install and upgrade documentation (added MySQL instructions)
+* Added age to device search results and asset info to unracked device view
+* Sorting and filtering now work in unracked device view
+* Added improved error messages for many situations
+* Restructured code: configuration is now part of Engine and Helper module has
+  been dropped. Methods are no longer exported from any modules
+* Added ability to hide domains in device table views (setting doesn't yet
+  stick, but will do in a later release)
+* System information is now included in error reports and config view.
+* Made configuration system more robust
+* Extensive testing of MySQL support on MySQL 5.0.51b
+* Tightened up foreign key constraints in Postgres/MySQL to prevent NULL
+  values
+* Fixed two bugs with validation which prevented the creation of racks
+* Fixed a bug when creating a room during a rack creation
+* Fixed a bug when creating a room when no buildings exist
+* Fixed rack copying so it now behaves as expected
+* Fixed a bug in the validation of descriptions for roles and service levels
+* Many other minor bug fixes and improvements
+
+1.2.4 Preview - Released 2008-05-06
+-----------------------------------
+* Improved interface
+* Device search
+* Device and Rack copying
+* Filtering of Device view
+* Experimental MySQL 5 support
+* Officially supports Postgres 7.4
+* Support for Safari 3
+* Beginning of much improved Help section
+* Fixed a bug in the calculation of rack space used
+* Now checks for supported DBI version when using Postgres
+* Many other minor changes, see the svn log for further information
+
+1.2.3 - Released 2007-07-25
+---------------------------
+* First beta release of 1.2
+* Made rack physical view more compact and usable (47U rack fits in 1280x1024)
+* If a user is logged in as guest they can't edit entries (see userdoc.txt)
+* Added querying of Dell server spec and warranty based on service tag
+* Added ability to view device in rack from device list view and highlighted
+  it within the rack.
+* Added device count and free space to rack table view
+* Added official support for IE7 and improved look in IE6
+* Extended report to include roles and operating system
+* Sorting and filtering work properly in device list views
+* Added trimming of white space from start and end of submitted values
+* Fixed a bug in the asset and extended templates which prevented asset and
+  serial numbers from being viewed.
+* Fixed a bug with sorting serial and asset numbers in device views
+* Fixed bug which allowed two >1U servers to overlap in some circumstances
+* Added check to ensure rack resize doesn't affect rack contents
+* Many other minor changes, see the svn log for further information
+
+1.2.2-1 - Released 2007-06-22
+-----------------------------
+* Fixed issue when using 1.2.2 with Postgres. SQLite users are not affected.
+
+1.2.2 - Released 2007-06-21
+---------------------------
+* Added support for operating system versions.
+* Added ability to perform basic filtering of devices in default views.
+* Added basic view of unracked devices.
+* Added alternating row colours to default (table) views.
+* Added basic help content to help view.
+* Added a basic reporting view (this will be expanded in later releases).
+* Added applications view (though attaching applications to devices is not
+  yet supported in this release).
+* Note section is hidden to reduce clutter if there aren't any notes. 
+* Fixed a bug preventing the creation of 1 U racks.
+* Fixed the location of the 'New' button in device default views in IE 6.
+
+1.2.1 - Released 2007-05-18
+---------------------------
+First release of 1.2. Complete rewrite with much improved engine and 
+features. This release is alpha quality and has a number of issues. See
+the README file for more information.
+
+1.1-1 - Released 2005-12-04
+---------------------------
+First full public release, hosted on Soureforge. 
+
+1.0 - Not officially released
+-----------------------------
+Initial experimentation with SQLite backend starting in March 2004. The
+exact date of the first code is not known but RackMonkey now celebrates
+its birthday on 15th March. 

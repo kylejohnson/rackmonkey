@@ -1,0 +1,196 @@
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# RackMonkey 1.2.5 Developer Guide                                           #
+##############################################################################
+
+You can read the latest version of this document in HTML format at:
+http://www.rackmonkey.org/doc/1.2.5
+
+
+Contents
+========
+1. Introduction
+2. Integrating with Other Systems
+3. Creating Custom Views
+4. Storing Custom Information
+5. Stylistic Conventions in RackMonkey Code/DB
+6. Appendix A: RackMonkey Engine Methods
+7. Appendix B: Template Variables
+
+1. Introduction
+===============
+This document is quite basic, but we hope it will help you extend and 
+customise RackMonkey. More comprehensive information will be included in
+future releases.
+
+
+2. Integrating with Other Systems
+=================================
+
+Linking to RackMonkey
+---------------------
+By using the RackMonkey search URL you can link from another application to
+a RackMonkey device. For example, you might have a monitoring system or wiki 
+with an entry for each device. 
+
+To determine the search URL to use for your RackMonkey install, search for the 
+string NAME using the search feature at the top right of the RackMonkey 
+window. You should end up with something ending:
+
+ /rackmonkey.pl?view=device&view_type=default_search&device_search=NAME
+
+In the other application simple add the complete URL, substituting NAME for 
+the name of the device you wish to link to. Now, when you follow the link from 
+the other application you will be presented with a list of matching RackMonkey 
+devices that you can quickly choose from.
+
+Linking from RackMonkey
+-----------------------
+The easiest way to add a link to another page is to use the notes field. You 
+can create a link using the following syntax:
+
+    [http://www.example.com|example link]
+
+If you want to add a link from every device or rack etc. this can become 
+tedious, so you might like to create a custom view or edit the RackMonkey 
+templates to include the link. See below for details.
+
+
+3. Creating Custom Views
+========================
+You can create a custom view in RackMonkey without writing any code. To create
+your new view you need to choose a type of object (device, rack, service) and 
+a view type to base your template on. 
+
+The normal views available are:
+* app
+* building
+* device
+* domain
+* hardware
+* org
+* os
+* rack
+* report
+* role
+* room
+* service
+
+The view types available are:
+
+* default:	A list view of this sort of object in table format
+* create:	A view for creating a new object
+* edit:		A view for editing an object
+* single:	A view of a single object
+* physical:	A specialised view used only with rack objects
+
+The view type you choose determines what sort of data is sent to the template.
+
+To make your new template create a file called:
+
+	<view>_<view-type>_<arbitary-name>.tmpl
+	
+For example, to create a new edit view for rooms, you might call your 
+template:
+
+	room_edit_foo.tmpl
+	
+You may find it easiest to copy the exiting room_edit.tmpl to get you started.
+
+Provided your template file is in the RackMonkey template directory you can 
+view it at once using:
+
+	rackmonkey.pl?view=<view>&view_type=<view-type>
+
+For our example above this would be:
+
+	rackmonkey.pl?view=room&view_type=edit_foo
+
+Remember, the first word of the view_type determines what sort of data your
+template gets sent. If your template doesn't work, check its view type is one
+of the allowed values above (physical only works with rack), and that you have
+used the singular for the type. For example, view=device will work, but
+view=devices will not.
+
+You can now edit your template however you like. You can also edit other
+templates to link to your new template, so it becomes a full part of
+RackMonkey. 
+
+RackMonkey uses HTML::Template to parse templates. You can include a variable:
+
+	<TMPL_VAR ESCAPE=HTML NAME=var_name>
+	
+Replacing var_name with the variable you want to include. Looking at the 
+existing templates is a good way to see what's possible (eg. loops). For more
+information on HTML::Template see:
+
+	http://html-template.sourceforge.net/
+
+Note that the included templates will be updated in future versions of
+RackMonkey, so you may wish to include links to your custom templates in a
+separate file for ease of updating. This also means it's best not to make
+extensive changes to the included templates, but to make a new template, then
+edit it.
+
+You can include one template in another like this:
+
+	<TMPL_INCLUDE NAME="filename">
+	
+Where filename is the name of the file to include from the template directory.
+
+A reference to the template variables available is included in Appendix B at
+the end of this guide.
+
+
+4. Storing Custom Information
+=============================
+RackMonkey 1.2.5 includes a custom_info field in the device table. At present
+there isn't an official API to update this, but normal SQL of the following 
+form can be used:
+
+    UPDATE device SET custom_info='ipsum lorem...' WHERE id=xxx;
+
+
+5. Stylistic Conventions in RackMonkey Code/DB
+==============================================
+* Brace style is BSD/Allman
+* Table names are in the singular: room not rooms
+* All tables have a primary key called id
+* Code indentation is 4 column and uses spaces
+
+
+6. Appendix A: RackMonkey Engine Methods
+========================================
+This documentation is now included as POD within Engine.pm, use the following 
+to view:
+
+	perldoc Engine.pm.
+
+
+7. Appendix B: Template Variables
+=================================
+This section includes some of the common RackMonkey template variables. If 
+you're looking for more examples the best place to check is a RackMonkey 
+template for the appropriate view.
+
+System Variables
+----------------
+The following system variables are available in all templates and ensure that
+templates are portable, no matter where RackMonkey is installed.
+
+base_url - URL of the RackMonkey application, e.g. /rackmonkey/rackmonkey.pl
+web_root - Base URL of web content, e.g. /rackmonkey
+
+Common Variables
+----------------
+id - The unique identifier for an instance of a  type (such as device), if you 
+have multiple types within a view you will need to use a prefix for at least 
+one type, e.g. building_id.
+
+name - The name of a an instance of a type (such as a device) if you 
+have multiple types within a view you will need to use a prefix for at least 
+one type, e.g. building_name.
+
+

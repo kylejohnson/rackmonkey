@@ -1,0 +1,159 @@
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# README for RackMonkey 1.2.5                                                #
+##############################################################################
+
+You can read the latest version of this document in HTML format at:
+http://www.rackmonkey.org/doc/1.2.5
+
+
+Contents
+========
+1. Introduction
+2. New in this Release
+3. Obtaining RackMonkey
+4. Installation
+5. Documentation
+6. Support
+7. Acknowledgements
+8. Legal Notices
+9. RackMonkey Licence
+
+
+1. Introduction
+===============
+RackMonkey is a web-based tool for managing racks of equipment such as web
+servers, video encoders, routers and storage devices. Using a simple interface 
+you can keep track of what's where, which OS it runs, when it was purchased, 
+who it belongs and what it's used for. No more searching for spreadsheets or 
+scribbled notes when you need to find a server: RackMonkey can quickly find 
+any device and draw a rack diagram of its location. RackMonkey is free and 
+open source (licensed under the GPL).
+
+
+2. New in this Release
+======================
+1.2.5 has a number of improvements over 1.2.4. These include:
+
+ * Many UI Improvements
+ * Excel spreadsheet export
+ * Print CSS for much better quality printouts
+ * Official MySQL support
+ * Numbering racks from the top as well as bottom
+ * Support for associating apps with devices
+ * Basic formatting of notes fields
+ * Operating system licences
+ * Device deletion in table and physical rack views
+ * Experimental DNS plugin
+
+For a more detailed list of changes in this and prior releases
+see doc/changes.txt.
+
+
+3. Obtaining RackMonkey
+=======================
+The easiest way to obtain a copy of RackMonkey is to download a tarball of the
+current release from http://www.rackmonkey.org.
+
+
+4. Installation
+===============
+Platform specific installation instructions are included for some operating
+systems. Please refer to the following documents as appropriate:
+
+ * Generic Install:                 doc/install.txt
+ * Debian/Ubuntu Install:           doc/install-debian-ubuntu.txt
+ * RHEL/CentOS/Fedora Install:      doc/install-redhat.txt
+ * Upgrade from prior release:      doc/upgrade.txt
+
+
+5. Documentation
+================
+You can find RackMonkey documentation:
+
+ * In the doc directory included in the RackMonkey distribution
+ * Within the application itself by selecting the 'Help' tab
+ * Online at http://www.rackmonkey.org/doc
+ * Perl pod is included in the perl modules. This can be viewed with perldoc.
+
+
+6. Support
+==========
+If you have and questions or issues with RackMonkey please check the following
+resources:
+
+ * RackMonkey documentation (see above)
+ * Troubleshooting document: doc/troubleshooting.txt
+ * FAQ: http://www.rackmonkey.org/faq
+
+If you're still stuck, please log a support request at:
+
+    http://www.rackmonkey.org/support
+
+When logging a support request please include as much detail as possible:
+operating system, database software and revision, and any error messages.
+
+You should also join the announce list to hear about issues and new releases:
+
+    http://www.rackmonkey.org/announce-list
+
+
+7. Acknowledgements
+===================
+I would like to thank the following for their contribution of code to the
+RackMonkey project:
+
+ * Pierre Larsson - Excel spreadsheet export functionality
+    
+
+Many people have helped me with the development of RackMonkey, but I would
+especially like to thank the following:
+
+ * Ben Argyle
+ * Piers Kent
+ * Tim Sweetman
+ * Nicola Worthington
+    
+
+Apps, code or ideas from the following projects helped or inspired RackMonkey
+development:
+
+ * FamFamFam (Mark James): http://www.famfamfam.com
+    Icons used in RackMonkey interface.
+ * Homo Habilis Associates: http://habilis.net/validator-sac
+    Standalone W3C validator used to check RackMonkey templates.
+ * silverorange: http://labs.silverorange.com
+    Inspiration for tabbed CSS design.
+ * SQLite project: http://www.sqlite.org
+    Original RackMonkey database engine.
+
+    
+8. Legal Notices
+================
+RackMonkey (C)2004-2009 Will Green. 
+RackMonkey and "Know Your Racks" are trademarks of Will Green.
+
+The inclusion of a particular company or product in RackMonkey data does
+not imply an endorsement by the author.
+
+RackMonkey includes icons licensed from Mark James under the Creative Commons
+Attribution 2.5 License. See http://www.famfamfam.com/lab/icons/silk/.
+
+
+9. RackMonkey Licence
+=====================
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 2 of the License, or (at your option)
+any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.

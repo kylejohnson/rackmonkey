@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!-- 
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# Device app association creation template                                   #
+##############################################################################
+-->
+<head>
+  <title>Create device relationship for <TMPL_VAR ESCAPE=HTML NAME=name> | RackMonkey</title>
+  <style type="text/css" media="all">
+  @import "<TMPL_VAR NAME=web_root>/styles/main.css";
+  @import "<TMPL_VAR NAME=web_root>/styles/tabs.css";
+  @import "<TMPL_VAR NAME=web_root>/styles/form.css";
+  </style>
+  <style type="text/css" media="print">
+  @import "<TMPL_VAR NAME=web_root>/styles/print.css";	
+  </style>
+  <script type="text/javascript" src="<TMPL_VAR NAME=web_root>/javascript/racklib.js"></script>
+  <link rel="icon" href="<TMPL_VAR NAME=web_root>/graphics/favicon.ico" />
+</head>
+<body>
+  <TMPL_INCLUDE NAME="nav-app.ssi">
+  <div id="main">
+    <form  method="post" action="<TMPL_VAR NAME=base_url>">
+      <table class="form">
+        <tr>
+          <th>Create device relationship for <TMPL_VAR ESCAPE=HTML NAME=name></th>
+        </tr>
+        <tr>
+          <td>
+            <strong><TMPL_VAR ESCAPE=HTML NAME=name></strong>
+            <select name="relation_id">
+              <option value="">-</option><TMPL_LOOP NAME=relations>
+              <option value="<TMPL_VAR ESCAPE=HTML NAME=id>"><TMPL_VAR ESCAPE=HTML NAME=name></option></TMPL_LOOP>
+            </select>
+            <strong>device</strong>
+            <select name="device_id">
+              <option value="">-</option><TMPL_LOOP NAME=devices>
+              <option value="<TMPL_VAR ESCAPE=HTML NAME=id>"><TMPL_VAR ESCAPE=HTML NAME=name><TMPL_UNLESS NAME=domain_meta_default_data>.<TMPL_VAR ESCAPE=HTML NAME=domain_name></TMPL_UNLESS></option></TMPL_LOOP>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="footer">
+            <input type="hidden" name="view" value="app" />
+            <input type="hidden" name="view_type" value="single" />
+            <input type="hidden" name="id" value="<TMPL_VAR ESCAPE=HTML NAME=id>" />
+            <input type="hidden" name="act" value="update" />
+            <input type="hidden" name="act_on" value="deviceApp" />
+            <input type="hidden" name="act_id" value="<TMPL_VAR ESCAPE=HTML NAME=device_app_id>" />
+            <input type="hidden" name="app_id" value="<TMPL_VAR ESCAPE=HTML NAME=id>" />
+            <button style="float: right" title="Save this app" type="submit">Save</button>
+            <button style="float: left" title="Cancel adding association for this app" onclick="window.location = '<TMPL_VAR NAME=base_url>?view=app&amp;view_type=single&amp;id=<TMPL_VAR ESCAPE=URL NAME=id>'; return false;">Cancel</button>
+            &nbsp;
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+  <TMPL_INCLUDE NAME="footer.ssi">
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!-- 
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# Rack default template                                                      #
+##############################################################################
+-->
+<head>
+	<title>Racks | RackMonkey</title>
+	<style type="text/css" media="all">
+	@import "<TMPL_VAR NAME=web_root>/styles/main.css";
+	@import "<TMPL_VAR NAME=web_root>/styles/tabs.css";
+	@import "<TMPL_VAR NAME=web_root>/styles/itemtable.css";
+	</style>
+	<style type="text/css" media="print">
+	@import "<TMPL_VAR NAME=web_root>/styles/print.css";	
+	</style>
+	<script type="text/javascript" src="<TMPL_VAR NAME=web_root>/javascript/racklib.js"></script>
+	<link rel="icon" href="<TMPL_VAR NAME=web_root>/graphics/favicon.ico" />
+</head>
+<body>
+	<TMPL_INCLUDE NAME="nav-rack.ssi">
+	<div id="main">
+		<form id="racks" method="get" action="<TMPL_VAR NAME=base_url>">
+			<table class="itemtable">
+				<tr>
+					<th colspan="3">
+						<a title="Create a new rack" onclick="window.location = '<TMPL_VAR NAME=base_url>?view=rack&amp;view_type=create'; return false;"><img class="create" src="<TMPL_VAR NAME=web_root>/graphics/icons/add.png" width="14" height="14" alt=""/></a>
+						<a title="Sort by name" href="<TMPL_VAR NAME=base_url>?view=rack&amp;order_by=rack.name">Rack</a></th>
+					<th><a title="Sort by size" href="<TMPL_VAR NAME=base_url>?view=rack&amp;order_by=device_count">Layout</a></th>
+					<th><a title="Sort by row" href="<TMPL_VAR NAME=base_url>?view=rack&amp;order_by=row.name">Row</a></th>			
+					<th><a title="Sort by room" href="<TMPL_VAR NAME=base_url>?view=rack&amp;order_by=room.name">Room</a></th>
+					<th><a title="Sort by size" href="<TMPL_VAR NAME=base_url>?view=rack&amp;order_by=rack.size">Size (U)</a></th>
+					<th><a title="Sort by size" href="<TMPL_VAR NAME=base_url>?view=rack&amp;order_by=free_space">Free (U)</a></th>		
+					<th><a title="Sort by notes" href="<TMPL_VAR NAME=base_url>?view=rack&amp;order_by=rack.notes">Notes</a></th>
+					<th class="no_print"><input onclick="checkboxInvert(document.getElementById('racks'));" type="checkbox" checked="checked"/></th>
+				</tr>
+				<TMPL_IF NAME=racks><TMPL_LOOP NAME=racks>
+				<TMPL_IF NAME="__odd__"><tr class="odd"><TMPL_ELSE><tr class="even"></TMPL_IF>
+					<td class="item_name"><a title="View details for this rack" href="<TMPL_VAR NAME=base_url>?view=rack&amp;view_type=single&amp;id=<TMPL_VAR ESCAPE=URL NAME=id>"><TMPL_VAR ESCAPE=HTML NAME=name></a></td>
+					<td class="item_edit"><a title="Edit rack '<TMPL_VAR ESCAPE=HTML NAME=name>'" href="<TMPL_VAR NAME=base_url>?view=rack&amp;view_type=edit&amp;id=<TMPL_VAR ESCAPE=URL NAME=id>"><img style="float: left; border: none" src="<TMPL_VAR NAME=web_root>/graphics/icons/pencil.png" width="14" height="14" alt=""/></a></td>
+					<td class="item_delete"><a onclick="return confirmDel('<TMPL_VAR ESCAPE=HTML NAME=name> (<TMPL_VAR ESCAPE=HTML NAME=room_name> in <TMPL_IF NAME=building_name_short><TMPL_VAR ESCAPE=HTML NAME=building_name_short><TMPL_ELSE><TMPL_VAR ESCAPE=HTML NAME=building_name></TMPL_IF>)')" title="Delete rack '<TMPL_VAR ESCAPE=HTML NAME=name> (<TMPL_VAR ESCAPE=HTML NAME=room_name> in <TMPL_IF NAME=building_name_short><TMPL_VAR ESCAPE=HTML NAME=building_name_short><TMPL_ELSE><TMPL_VAR ESCAPE=HTML NAME=building_name></TMPL_IF>)'" href="<TMPL_VAR NAME=base_url>?view=rack&amp;view_type=default&amp;act=delete&amp;act_on=rack&amp;act_id=<TMPL_VAR ESCAPE=URL NAME=id>"><img style="float: left; border: none" src="<TMPL_VAR NAME=web_root>/graphics/icons/delete.png" width="14" height="14" alt=""/></a></td>
+					<td><a title="View device layout within this rack" href="<TMPL_VAR NAME=base_url>?view=rack&amp;view_type=physical&amp;id=<TMPL_VAR ESCAPE=URL NAME=id>"><TMPL_IF NAME=device_count><TMPL_VAR ESCAPE=HTML NAME=device_count> Devices<TMPL_ELSE>Empty</TMPL_IF></a></td>
+					<td><TMPL_UNLESS NAME=row_hidden><TMPL_VAR ESCAPE=HTML NAME=row_name> [<TMPL_VAR ESCAPE=HTML NAME=row_pos>]<TMPL_ELSE>N/A</TMPL_UNLESS></td>
+					<td><TMPL_VAR ESCAPE=HTML NAME=room_name> in <TMPL_IF NAME=building_name_short><TMPL_VAR ESCAPE=HTML NAME=building_name_short><TMPL_ELSE><TMPL_VAR ESCAPE=HTML NAME=building_name></TMPL_IF></td>
+					<td><TMPL_VAR ESCAPE=HTML NAME=size></td>
+					<td><TMPL_VAR ESCAPE=HTML NAME=free_space></td>
+					<td><TMPL_IF NAME=notes_short><span title="<TMPL_VAR NAME=notes>"><TMPL_VAR NAME=notes_short></span><TMPL_ELSE><TMPL_IF NAME=notes><TMPL_VAR NAME=notes><TMPL_ELSE>-</TMPL_IF></TMPL_IF></td>
+					<td class="no_print"><input type="checkbox" name="rack_list" value="<TMPL_VAR ESCAPE=HTML NAME=id>" /></td>
+				</tr></TMPL_LOOP></TMPL_IF>
+				<tr>
+					<td colspan="10" class="footer">
+						Showing <TMPL_VAR ESCAPE=HTML NAME=listed_rack_count> of <TMPL_VAR ESCAPE=HTML NAME=total_rack_count> racks
+					</td>
+				</tr>
+			</table>
+			<p>
+				<input type="hidden" name="view" value="rack" />
+				<input type="hidden" name="view_type" value="physical" />
+				<button title="View the device layout of the selected racks" type="submit">Device Layout</button>
+			</p>
+		</form>
+	</div>
+	<TMPL_INCLUDE NAME="footer.ssi">
+</body>
+</html>

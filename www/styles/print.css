@@ -1,0 +1,78 @@
+/*
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# CSS styling for printing                                                   #
+##############################################################################
+*/
+
+*,
+a,
+.rack_physical_num,
+.rack_physical_dev,
+.rack_physical_dev_wide,
+.rack_physical_empty,
+.rack_physical_empty_wide,
+.rack_physical_selected,
+.rack_physical_selected_wide,
+.rack_header a,
+table.rack_physical th.rack_header,
+table.report th,
+table.itemtable th,
+table.itemtable th a,
+table.itemtable td.footer a
+{
+	color: black;
+	background: white;
+	text-decoration: none;
+}
+
+IMG,
+#navbar,
+#user_connection,
+#main #device_options,
+#domainLink,
+#search_explain,
+#help_nav,
+#report_nav,
+.no_print,
+INPUT,
+BUTTON,
+SELECT,
+table.itemtable td.footer,
+a.small
+{
+	display: none;
+}
+
+img.screenshot
+{
+	display: block;
+}
+
+.print_break
+{
+	page-break-before: always;	
+}
+
+#footer,
+#footer a
+{
+	font-size: 6pt;
+	color: black;
+	text-decoration: none;
+}
+
+table.form td.footer
+{
+	border: solid 1px #000;
+	text-align: left;
+	font-style: italic;
+	font-size: 8pt;
+}
+
+table.itemtable td.item_name
+{
+	min-width: 0;
+}

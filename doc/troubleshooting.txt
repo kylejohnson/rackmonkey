@@ -1,0 +1,147 @@
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# RackMonkey 1.2.5 Troubleshooting Guide                                     #
+##############################################################################
+
+You can read the latest version of this document in HTML format at:
+http://www.rackmonkey.org/doc/1.2.5
+
+
+Contents
+========
+1. Introduction
+2. Internal Server Error
+3. Unsupported Database Driver
+4. Database Related Errors
+5. Missing Graphics and Stylesheet
+6. Misc
+
+
+1. Introduction
+===============
+This document deals with system issues which prevent RackMonkey running or
+using its database. For further support information see the README file.
+Information on error messages is also available under the Help tab in the
+RackMonkey interface.
+
+
+2. Internal Server Error
+========================
+If you get an 'Internal Server Error' or the web server displays the text of
+rackmonkey.pl (rather than executing it), check your web server error log.
+
+Common reasons for RackMonkey failing to run are:
+
+* The #! line at the top of rackmonkey.pl can't find env in /usr/bin
+  This is the usual cause of errors of the form: 
+      [error] (2)No such file or directory: exec of rackmonkey.pl failed
+  You can fix this by editing the #! line to point at env or directly at perl.
+
+* Permissions incorrectly set for rackmonkey.pl. Usually solved by running:
+      $ chmod 755 rackmonkey.pl
+
+* ExecCGI isn't turned on for the directory in which rackmonkey.pl resides or
+  for files of type .pl (this problem applies to Apache web servers).
+  See the installation instructions for advice on fixing this.
+        
+* Missing modules
+  This is usually indicated by an error of the form:
+      Can't locate MODULE.pm in @INC ....
+  Make sure you installed all the required modules. See the installation
+  instructions for advice on fixing this.
+
+* DOS line endings on files
+  If you have DOS line endings on files it can break the #! line. Try
+  downloading RackMonkey again, or use the dos2unix command.
+
+* Perl version isn't at least 5.61
+  If your perl version isn't new enough you will get an error of the form:
+      Perl v5.6.1 required--this is only v5.004
+  You can download a newer perl from: http://www.perl.com/download.csp 
+
+
+3. Unsupported Database Driver
+==============================
+RackMonkey checks for a supported database driver when intializing the engine. 
+If this check fails you will get an error of the form "You tried to use an 
+unsupported database driver" with advice on the minimum supported version if 
+appropriate. 
+
+To correct this issue you should install a supported driver. See the 
+installation instructions for details on installing Perl modules.
+
+Alternatively you can choose to disable the database driver checks. THIS IS 
+NOT RECOMMENDED AND MAY RESULT IN MALFUNCTION OR DATA LOSS. To disable the 
+checks add the following line to rackmonkey.conf:
+
+ bypass_db_driver_checks=1
+
+
+4. Database Related Errors
+==========================
+    
+Unable to Edit/Create Entries
+-----------------------------
+If RackMonkey is able to display entries without issue, but when you try to
+create or edit an entry you get a message similar to the following:
+
+    "...unable to open database file(1)..."
+    "...attempt to write a readonly database(1)..." 
+
+You should check the permission on the SQLite database file and the directory
+in which it resides. The web servers needs to be able to write to the file and
+the directory. This error can only occur when using SQLite, as other databases
+engines don't make direct use of files in the same way.
+
+
+Permission Denied for Relation <table>
+--------------------------------------
+If you're using Postgres and get an error of the form:
+
+    "...permission denied for relation <table>..."
+
+You haven't granted appropriate permissions to the role (a user in Postgres 
+speak) you're using to connect to the database. Try running a command of the
+form in psql:
+
+    GRANT ALL ON <table>,<table>_id_seq to <role>;
+
+Where <role> is the role you're using to connect from RackMonkey, and <table>
+is the relation mentioned in the error message.
+
+
+DBD::SQLite::db prepare failed: unsupported file format(1)
+----------------------------------------------------------
+This error occurs when you use a newer version of the sqlite binary to create 
+your database than your DBD::SQLite perl module is compiled against. The best 
+way to solve this problem is to update your copy of DBD::SQLite. Alternatively 
+you can recreate your database with PRAGMA legacy_file_format=ON, see 
+http://www.sqlite.org/pragma.html.
+
+
+DBD::mysql::st execute failed: No database selected
+---------------------------------------------------
+This error occurs when you make an error in the 'dbconnect' setting in
+rackmonkey.conf. Make sure you have typed all the names and values correctly. 
+Check the installation instructions for details of the correct format.
+ 
+
+5. Missing Graphics and Stylesheet
+==================================
+If the RackMonkey script runs, but the graphics and stylesheet are missing,
+you should check the wwwpath setting in rackmonkey.conf. This path is within 
+URL (web) space NOT filesystem space.
+
+
+6. Misc
+=======
+
+Hardware Model is "Dummy Option"
+--------------------------------
+When creating or editing a device the only hardware model that shows up in the 
+dropdown is "Dummy Option". This issue is caused by having JavaScript disabled 
+in your web browser. Enable JavaScript and all should be well. The dropdown
+for the hardware model is populated by JavaScript depending on which
+manufacturer you choose.

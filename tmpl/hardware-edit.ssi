@@ -1,0 +1,38 @@
+<!-- hardware edit include: Version 1.2.5-1 -->
+						<div>
+							<label for="name">Name</label><br />
+							<input id="name" name="name" type="text" size="60" value="<TMPL_VAR ESCAPE=HTML NAME=name>" />
+						</div>
+						<div>
+							<label for="manufacturer_id">Manufacturer [<a href="<TMPL_VAR NAME=base_url>?view=org&amp;view_type=create&amp;hardware=1&amp;return_view=hardware&amp;return_view_type=<TMPL_VAR NAME=view_type>&amp;return_view_id=<TMPL_VAR ESCAPE=URL NAME=id>">add</a>]</label><br />
+							<select id="manufacturer_id" name="manufacturer_id"><TMPL_LOOP NAME=manufacturerlist>
+										<option<TMPL_IF NAME=selected> selected="selected"</TMPL_IF> value="<TMPL_VAR ESCAPE=HTML NAME=id>"><TMPL_VAR ESCAPE=HTML NAME=name></option></TMPL_LOOP>
+							</select>
+						</div>
+						<div>
+							<label for="size">Size (U)</label><br />
+							<input style="text-align: right" type="text" size="4" name="size" id="size" value="<TMPL_VAR ESCAPE=HTML NAME=size>" />		
+						</div>
+						<div>
+							<label for="image">Image File</label><br />
+							<input type="text" size="60" name="image" id="image" value="<TMPL_VAR ESCAPE=HTML NAME=image>" />
+						</div>
+						<div>
+							<label for="support_url">Support URL</label><br />
+							<input type="text" size="60" name="support_url" id="support_url" value="<TMPL_VAR ESCAPE=HTML NAME=support_url>" />
+						</div>	
+						<div>
+							<label for="spec_url">Specification URL</label><br />
+							<input type="text" size="60" name="spec_url" id="spec_url" value="<TMPL_VAR ESCAPE=HTML NAME=spec_url>" />
+						</div>
+						<div>
+							<label for="notes">Notes [<a onclick="showNotesStyleKey();" href="#">show style syntax</a>]</label><br />
+							<textarea id="notes" name="notes" cols="55" rows="4"><TMPL_VAR ESCAPE=HTML NAME=notes></textarea>
+							<p id="notes_style_key">
+								<strong>Notes Style Syntax</strong><br/>
+								Emphasis: **example** = <em>example</em><br/>
+								Strong: ***example*** = <strong>example</strong><br/>
+								Link: [http://www.example.com|example link] = <a href="http://www.example.com">example link</a>
+							</p>
+						</div>
+						<!-- end of hardware edit include -->

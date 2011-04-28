@@ -1,0 +1,226 @@
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# RackMonkey 1.2.5 RHEL/CentOS/Fedora Install Guide                          #
+##############################################################################
+
+You can read the latest version of this document in HTML format at:
+http://www.rackmonkey.org/doc/1.2.5
+
+
+Contents
+========
+1. Introduction  
+2. System Set Up
+3. Installing RackMonkey
+4. Configuring the Web Server
+5. Configuring RackMonkey
+6. Database Set Up
+7. Running RackMonkey
+8. RackMonkey Plugins: Excel and DNS
+
+
+1. Introduction  
+===============
+This document explains how to perform a fresh install of RackMonkey with 
+SQLite on Red Hat Enterprise Linux (RHEL), CentOS or Fedora. If you wish to
+use a different database, please consult the generic installation 
+instructions: doc/install.txt. For upgrades you should follow doc/upgrade.txt.
+
+The following OS releases have been tested (all tests were on x86-64/amd64):
+
+ * CentOS 5.2
+ * Fedora 10
+ * RHEL 5.3
+
+RHEL/CentOS 4 can NOT use this procedure as some of their packages don't meet
+the minimum requirements. For such systems you should use the generic 
+installation instructions: doc/install.txt
+
+You need a web browser with JavaScript enabled to access the RackMonkey
+interface. Any reasonably standards-compliant browser should work, but the 
+following browsers are officially supported:
+
+ * Firefox 2, 3
+ * Internet Explorer 6, 7, 8
+ * Safari 2, 3, 4
+ 
+Please note that the $ shown at the start of commands represent the shell
+prompt, you should not type it.
+
+
+2. System Set Up
+================
+RHEL & CentOS do not include packages for all the RackMonkey dependencies. To 
+get around the issue, this install procedure makes use of EPEL (Extra Packages 
+for Enterprise Linux). EPEL is maintained by the Fedora project. For more 
+information see http://fedoraproject.org/wiki/EPEL. 
+
+Fedora users have all the required packages, so don't need to use EPEL.
+
+Setting Up EPEL
+---------------
+RHEL and CentOS users should install the appropriate RPM from 
+http://download.fedora.redhat.com/pub/epel/5/. 
+
+For example, if you're using 64-bit CentOS/RHEL 5.2 you would run:
+
+    $ rpm -Uvh http://download.fedora.redhat.com/pub/epel/5/x86_64/epel-release-5-2.noarch.rpm
+
+If you need help with EPEL see http://fedoraproject.org/wiki/EPEL/FAQ#howtouse
+
+Installing RPMs
+---------------
+Run the following commands from a terminal and say yes to the installation of
+any dependancies:
+
+    $ yum install httpd
+    $ yum install sqlite
+    $ yum install perl-DBI
+    $ yum install perl-DBD-SQLite
+    $ yum install perl-HTML-Template
+    $ yum install perl-HTML-Parser
+
+Starting Apache
+---------------
+Check if Apache is running:
+
+    $ service httpd status
+    
+If it is stopped, you can start it with:
+
+    $ service httpd start
+
+To enable Apache to start at boot use:    
+
+    $ chkconfig httpd
+    
+
+3. Installing RackMonkey
+========================
+Once you have obtained a copy of RackMonkey (see README) you should have a
+directory with the following layout:
+
+    conf        RackMonkey and Apache configuration files
+    doc         Documentation for RackMonkey
+    perl        Perl scripts and modules
+    README      Read this first
+    sql         SQL to create the RackMonkey database
+    tmpl        Web interface templates
+    www         Web space files: images, CSS and JavaScript
+
+Make a directory for rackmonkey in web space:
+
+    $ mkdir /var/www/html/rackmonkey
+
+Copy the rackmonkey.pl file and the whole perl/RackMonkey directory to your
+new web directory and make the script executable:
+
+    $ cp rackmonkey-1.2.5/perl/rackmonkey.pl /var/www/html/rackmonkey
+    $ cp -r rackmonkey-1.2.5/perl/RackMonkey /var/www/html/rackmonkey
+    $ chmod 755 /var/www/html/rackmonkey/rackmonkey.pl
+
+Copy the RackMonkey web content into the web directory (note the * in the 
+following command):
+
+    $ cp -r rackmonkey-1.2.5/www/* /var/www/html/rackmonkey
+
+Make a directory for template and data content:
+
+    $ mkdir /var/lib/rackmonkey
+    $ chown apache:apache /var/lib/rackmonkey
+
+Copy the templates into the directory:
+
+    $ cp -r rackmonkey-1.2.5/tmpl /var/lib/rackmonkey
+
+
+4. Configuring the Web Server
+=============================
+Copy the Apache configuration into place and reload the web server:
+
+    $ cp rackmonkey-1.2.5/conf/httpd-rackmonkey.conf /etc/httpd/conf.d 
+    $ service httpd reload
+
+
+5. Configuring RackMonkey
+=========================
+Copy the default configuration file into /etc:
+
+    $ cp rackmonkey-1.2.5/conf/rackmonkey.conf-default /etc/rackmonkey.conf
+
+Amend /etc/rackmonkey.conf as follows:
+
+    dbconnect = dbi:SQLite:dbname=/var/lib/rackmonkey/rackmonkey.db
+    tmplpath = /var/lib/rackmonkey/tmpl
+    wwwpath = /rackmonkey
+    
+
+6. Database Set Up
+==================
+Set up the schema and data:
+
+    $ sqlite3 /var/lib/rackmonkey/rackmonkey.db < rackmonkey-1.2.5/sql/schema/schema.sqlite.sql
+    $ sqlite3 /var/lib/rackmonkey/rackmonkey.db < rackmonkey-1.2.5/sql/data/default_data.sql
+    $ sqlite3 /var/lib/rackmonkey/rackmonkey.db < rackmonkey-1.2.5/sql/data/sample_data.sql
+
+Change the owner and group of the database to be that of the web server:
+
+    $ chown apache:apache /var/lib/rackmonkey/rackmonkey.db
+
+
+7. Running RackMonkey
+=====================
+Point your web browser at one of the following:
+
+    http://localhost/rackmonkey/rackmonkey.pl (for local connections)
+    http://<hostname>/rackmonkey/rackmonkey.pl (for remote connections)
+
+You should be greeted by the RackMonkey interface. If all is well, read the
+user guide under the 'Help' tab within the RackMonkey interface.
+
+If you get an error, check out doc/troubleshooting.txt and README for advice.
+
+
+8. RackMonkey Plugins: Excel and DNS
+====================================
+The Excel export and DNS query plugins are optional. To use them you need to 
+install two additional perl module packages. Unfortunately the perl-Net-DNS 
+package (Net::DNS) is not available from EPEL, so can't be installed on RHEL 
+or CentOS. To enable the DNS plugin on RHEL/CentOS please use CPAN (see 
+doc/install.txt for details).
+
+On all systems:
+
+    $ yum install perl-Spreadsheet-WriteExcel
+
+On Fedora only:
+
+    $ yum install perl-Net-DNS
+    
+Then copy the plugins into place and make executable.
+
+On all systems:
+
+    $ cp rackmonkey-1.2.5/perl/rack2xls.pl /var/www/html/rackmonkey
+    $ chmod 755 /var/www/html/rackmonkey/rack2xls.pl
+
+On Fedora only:
+
+    $ cp rackmonkey-1.2.5/perl/rackdns.pl /var/www/html/rackmonkey
+    $ chmod 755 /var/www/html/rackmonkey/rackdns.pl
+
+Finally you need to enable the plugins by uncommenting the relevant lines in 
+/etc/rackmonkey.conf as follows (remove the # from the start of the lines):
+
+    plugin_xls = rack2xls.pl
+    plugin_dns = rackdns.pl
+
+You shouldn't enable plugin_dns on RHEL/CentOS unless you've installed 
+Net::DNS.
+
+You should now find an 'Export XLS' button at the top of the device table 
+views and (if installed) a 'Query DNS...' link next to the device name in 
+single device view. To see the single device view simply click on the name of 
+a device in the rack or device table views.

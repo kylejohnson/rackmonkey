@@ -1,0 +1,32 @@
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# RackMonkey Configuration                                                   #
+##############################################################################
+
+# NB. Comments must either start a line or follow whitespace
+
+# Database Connection Settings
+dbconnect =
+dbuser =
+dbpass =
+
+# Path & URL Constants
+tmplpath =
+wwwpath =
+
+# Plugins - to enable/disable a plugin uncomment/comment the appropriate line
+#plugin_xls = rack2xls.pl
+#plugin_dns = rackdns.pl
+
+# URL to query Dell warranty and spec information
+dellquery = http://support.euro.dell.com/support/topics/topic.aspx/emea/shared/support/my_systems_info/en/details?c=uk&cs=ukbsdt1&l=en&s=bsd&~ck=ln&lnki=2&ServiceTag=
+
+# Preference Constants
+defaultview = rack      # Default view loaded when none is specified
+dateformat = %Y-%m-%d   # Format used to display dates (not currently used)
+shorttextlen = 32       # Shorten text longer than this for table views
+shorturllen = 64        # Shorten URLs longer than this for display
+number_from_top = 0     # Number racks from the top by default?
+size_of_u = 14          # The size of a 1U device in the physical rack view in pixels

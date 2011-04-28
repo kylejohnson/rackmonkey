@@ -1,0 +1,40 @@
+/*
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# Help CSS styling                                                           #
+##############################################################################
+*/
+
+p
+{
+	margin-right: 12px;
+}
+
+.screenshot
+{
+	border: solid;
+	border-width: 1px;
+	border-color: silver;
+}
+
+h2
+{
+    margin-bottom: 0px;
+}
+
+h3.error
+{
+	margin-bottom: 0px;
+}
+
+h4
+{
+	margin-bottom: -8px;
+}
+
+p.error
+{
+	margin-top: 2px;
+}

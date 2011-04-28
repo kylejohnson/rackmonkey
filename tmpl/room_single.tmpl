@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!-- 
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# Room single view template                                                  #
+##############################################################################
+-->
+<head>
+	<title><TMPL_VAR ESCAPE=HTML NAME=name> in <TMPL_VAR ESCAPE=HTML NAME=building_name> | RackMonkey</title>
+	<style type="text/css" media="all">
+	@import "<TMPL_VAR NAME=web_root>/styles/main.css";
+	@import "<TMPL_VAR NAME=web_root>/styles/tabs.css";
+	@import "<TMPL_VAR NAME=web_root>/styles/form.css";
+	</style>
+	<style type="text/css" media="print">
+	@import "<TMPL_VAR NAME=web_root>/styles/print.css";	
+	</style>
+	<script type="text/javascript" src="<TMPL_VAR NAME=web_root>/javascript/racklib.js"></script>
+	<link rel="icon" href="<TMPL_VAR NAME=web_root>/graphics/favicon.ico" />
+</head>
+<body>
+	<TMPL_INCLUDE NAME="nav-config.ssi">
+	<div id="main">
+		<table class="form">
+			<tr>
+				<th>
+					<button style="float: right; margin-top: -2px" title="View all rooms" onclick="window.location = '<TMPL_VAR NAME=base_url>?view=room&amp;view_type=default'; return false;">View All</button>
+					<button style="float: right; margin-right: 4px; margin-top: -2px" title="Create a new room" onclick="window.location = '<TMPL_VAR NAME=base_url>?view=room&amp;view_type=create'; return false;">New Room</button>
+					<span class="title">Rooms</span>
+				</th>
+			</tr>
+			<tr>
+				<td>
+					<div>
+						<div class="key">Name</div>
+						<div class="value"><TMPL_VAR ESCAPE=HTML NAME=name></div>
+					</div>
+					<div>
+						<div class="key">In Building</div>
+						<div class="value"><TMPL_VAR ESCAPE=HTML NAME=building_name> &nbsp; <a class="small" title="View details for this building" href="<TMPL_VAR NAME=base_url>?view=building&amp;view_type=single&amp;id=<TMPL_VAR ESCAPE=URL NAME=building>">Details&hellip;</a></div>
+					</div>						
+					<div>
+						<div class="key">Rows</div>
+						<div class="value">
+							<TMPL_IF NAME=has_rows>
+							This room has <TMPL_VAR ESCAPE=HTML NAME=row_count> rows.
+							<TMPL_ELSE>
+							This room is not organised into rows.
+							</TMPL_IF>
+						</div>
+					</div>
+					<div>
+						<div class="key">Racks [<a href="<TMPL_VAR NAME=base_url>?view=rack&amp;view_type=create&amp;room_id=<TMPL_VAR ESCAPE=URL NAME=id>&amp;return_view=room&amp;return_view_type=single&amp;return_view_id=<TMPL_VAR ESCAPE=URL NAME=id>">add</a>]</div>
+						<div class="value">
+							<TMPL_IF NAME=racks><TMPL_LOOP NAME=racks>
+							<a title="View details for this rack" href="<TMPL_VAR NAME=base_url>?view=rack&amp;view_type=single&amp;id=<TMPL_VAR ESCAPE=URL NAME=id>"><TMPL_VAR ESCAPE=HTML NAME=name></a><TMPL_UNLESS __last__>,</TMPL_UNLESS>
+							</TMPL_LOOP><TMPL_ELSE>This room contains no racks.</TMPL_IF>
+						</div>
+					</div><TMPL_IF NAME=notes>
+					<hr />
+					<div>
+						<div class="key">Notes</div>
+						<div class="value"><TMPL_VAR NAME=notes></div>
+					</div></TMPL_IF>
+				</td>
+			</tr>
+			<tr>
+				<td class="footer">		
+					<TMPL_UNLESS NAME=meta_default_data><button style="float: left" title="Delete this room" onclick="if (confirmDel('<TMPL_VAR ESCAPE=HTML NAME=name>')) { window.location = '<TMPL_VAR NAME=base_url>?view=room&amp;view_type=default&amp;act=delete&amp;act_on=room&amp;act_id=<TMPL_VAR ESCAPE=URL NAME=id>'; return false; }">Delete</button></TMPL_UNLESS>
+					<button style="float: right" title="Edit this room" onclick="window.location = '<TMPL_VAR NAME=base_url>?view=room&amp;view_type=edit&amp;id=<TMPL_VAR ESCAPE=URL NAME=id>&amp;return_view_type=<TMPL_VAR ESCAPE=HTML NAME=view_type>&amp;return_view_id=<TMPL_VAR ESCAPE=HTML NAME=id>'; return false;">Edit</button>	
+					<span class="updated">Entry last updated by <TMPL_VAR ESCAPE=HTML NAME=meta_update_user> at <TMPL_VAR ESCAPE=HTML NAME=meta_update_time> GMT</span>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<TMPL_INCLUDE NAME="footer.ssi">
+</body>
+</html>

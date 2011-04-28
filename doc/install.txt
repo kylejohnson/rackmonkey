@@ -1,0 +1,463 @@
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# RackMonkey 1.2.5 Install Guide                                             #
+##############################################################################
+
+You can read the latest version of this document in HTML format at:
+http://www.rackmonkey.org/doc/1.2.5
+
+
+Contents
+========
+1. Introduction  
+2. System Set Up
+3. Installing RackMonkey
+4. Configuring the Web Server
+5. Configuring RackMonkey
+6. Database Set Up
+7. Running RackMonkey
+8. RackMonkey Plugins: Excel and DNS
+
+
+1. Introduction  
+===============
+This document explains how to install RackMonkey for a generic system. 
+
+Platform specific installation instructions are included for some operating
+systems. Please refer to the following documents if appropriate:
+
+* Debian/Ubuntu:        doc/install-debian-ubuntu.txt
+* RHEL/CentOS/Fedora:   doc/install-redhat.txt
+
+This document covers the installation of a new instance of RackMonkey. For
+upgrades you should follow doc/upgrade.txt.
+
+You need a web browser with JavaScript enabled to access the RackMonkey
+interface. Any reasonably standards-compliant browser should work, but the 
+following browsers are officially supported:
+
+ * Firefox 2, 3
+ * Internet Explorer 6, 7, 8
+ * Safari 2, 3, 4
+ 
+Please note that the $ shown at the start of commands represent the shell
+prompt, you should not type it.
+
+
+2. System Set Up
+================
+You need the following in order to install and use RackMonkey. Some of these
+requirements have been revised since 1.2.4.
+
+* Web server. Apache 2 is recommended.
+
+* One of the following databases (your OS may include packages for these):
+  - SQLite 3.3.6 or higher
+      SQLite can be obtained from http://www.sqlite.org
+  - PostgreSQL 7.4.19 or higher (8 or higher strongly recommended)
+      Postgres can be obtained from http://www.postgresql.org
+  - MySQL 5.0.22 or higher
+      MySQL can be obtained from http://dev.mysql.com/downloads/mysql/
+
+  NB. SQLite is the simplest database to administer. If you're not an
+  experienced database administrator we recommend you use SQLite.
+    
+* Perl 5.61 or higher (5.84 or higher recommended) with the following modules:
+  - DBI 1.45 or higher
+  - CGI
+  - HTML::Template and HTML::Entities  
+  - The DBI driver for your chosen database:
+    - For SQLite: DBD::SQLite 1.12 or higher
+    - For Postgres: DBD::Pg 1.48 or higher
+    - For MySQL DBD::mysql 3.0002 or higher
+
+The easiest way to install modules is usually with the CPAN shell. You
+generally need to be root in order to do this. 
+
+   $ perl -eshell -MCPAN
+    
+On Mac OS X or Ubuntu Linux you can use sudo to temporarily become root (enter 
+your usual administrator password when prompted):
+
+    $ sudo perl -eshell -MCPAN
+
+Once the shell has started (you may be prompted to configure it):
+
+    install DBI
+    install CGI
+    install HTML::Template
+    install HTML::Entities
+
+Then install the database driver for the database you're using:
+
+    SQLite:   install DBD::SQLite
+    Postgres: install DBD::Pg
+    MySQL:    install DBD::mysql
+
+
+3. Installing RackMonkey
+========================
+Once you have obtained a copy of RackMonkey (see README) you should have a
+directory with the following layout:
+
+    conf        RackMonkey and Apache configuration files
+    doc         Documentation for RackMonkey
+    perl        Perl scripts and modules
+    README      Read this first
+    sql         SQL to create the RackMonkey database
+    tmpl        Web interface templates
+    www         Web space files: images, CSS and JavaScript
+
+Copy the rackmonkey.pl file and the whole RackMonkey directory from the perl
+directory to a suitable location on your web server (e.g. /rackmonkey) and
+ensure that rackmonkey.pl is executable by the web server user.
+
+For example to make rackmonkey.pl executable by all users run:
+
+    $ chmod 755 rackmonkey.pl
+    
+NB. Do not install RackMonkey in a path containing spaces as this will cause
+    difficulties with configuration and lead to ugly URLs with %20 in them.
+
+The RackMonkey script uses /usr/bin/env to choose the perl revision to run. If
+you want to specify a specific version of perl, or your env command lives in
+another directory, you need to update the #! line at the top of rackmonkey.pl.
+
+Copy the tmpl directory to somewhere that can be read by the web server, but
+ideally not in web space, for example: /home/rackmonkey/tmpl
+
+Copy the contents of the www directory to somewhere within web space where you
+want to serve web content from, e.g. /rackmonkey within the web root. This
+directory needs to be accessible from a web browser. If you choose to serve 
+RackMonkey from another location you will need to update httpd-rackmonkey.conf 
+and rackmonkey.conf to reflect this, see sections 4 and 5 (below).
+
+
+4. Configuring the Web Server
+=============================
+RackMonkey includes an Apache configuration snippet that enables the correct 
+settings for http://<yourserver>/rackmonkey. If you are happy to serve 
+RackMonkey from this location then you can simply include the configuration 
+snippet in your Apache configuration as follows.
+
+Linux
+-----
+On most Linux distributions you can configure Apache by copying
+conf/httpd-rackmonkey.conf into /etc/apache2/conf.d or /etc/httpd/conf.d and 
+getting Apache to reread its configuration. 
+
+On Debian and Ubuntu:
+
+    $ /etc/init.d/apache2 force-reload
+
+On Red Hat based Linux systems (including Fedora, RHEL and CentOS):
+
+    $ service httpd reload
+
+Mac OS X 10.5 (Leopard)
+-----------------------
+Open a terminal and use sudo to copy the configuration and reload apache:
+
+    $ sudo cp conf/httpd-rackmonkey.conf /private/etc/apache2/other 
+    $ sudo apachectl graceful
+
+NetBSD
+------
+Copy conf/httpd-rackmonkey.conf into /usr/local/etc/apache and add the
+following line to the bottom of /usr/local/etc/apache/httpd.conf
+
+    Include /usr/local/etc/apache/httpd-rackmonkey.conf
+    
+Then reload apache configuration with:
+
+    $ /etc/rc.d/apache reload
+    
+Other Operating Systems
+-----------------------
+Copy conf/httpd-rackmonkey.conf into your Apache configuration directory, 
+which is often found in /etc/ or /usr/local/etc and is generally called httpd, 
+apache or apache2. Then add the following line to your httpd.conf:
+
+    Include /<path>/httpd-rackmonkey.conf
+
+Replacing <path> with wherever you put httpd-rackmonkey.conf.
+
+You can then get apache to reload its configuration using:
+
+    $ apachectl graceful
+    
+Or, if you don't have apachectrl available, by sending using kill -HUP on the 
+apache parent process.
+
+If you're having difficulty locating Apache configuration information you may 
+find http://wiki.apache.org/httpd/DistrosDefaultLayout helpful.
+
+Using .htaccess
+---------------
+If you can't alter the apache configuration directly you can set the
+RackMonkey configuration location by adding the following to an .htaccess file
+in the directory containing rackmonkey.pl:
+
+    SetEnv RACKMONKEY_CONF /<path>/rackmonkey.conf
+
+If you can't get this to work you should speak to your apache administrator.
+
+Other Web Servers
+-----------------
+For web servers other than Apache you should consult your server documentation 
+on running CGI applications.
+
+
+5. Configuring RackMonkey
+=========================
+Configuration is stored in a text file, which is read from 
+/etc/rackmonkey.conf by default. If you're happy with this location, simply 
+copy conf/rackmonkey.conf-default to /etc/rackmonkey.conf and proceed to the 
+'Editing Configuration' section (below).
+
+NB. If you're using Postgres or MySQL, this configuration file may contain 
+your database username and password. For maximum security only root (or the 
+RackMonkey admin) and the web server should be able to read this file.
+
+Changing Configuration Path
+---------------------------
+If you want to place the configuration in another location you need to tell 
+RackMonkey where to find it using an environment variable. To do this for 
+Apache, edit the SetEnv RACKMONKEY_CONF line in httpd-rackmonkey.conf (which 
+you installed above) to point at your chosen path.
+
+Editing Configuration
+---------------------
+Before you can run RackMonkey you need to edit the configuration file to match 
+your directory and database locations.
+
+Comments in the configuration file are included with the a #. Comments must
+either start a line or be preceded by whitespace. Values in the configuration
+file cannot include spaces and configuration variables are lower case:
+
+    Right: wwwpath = /rackmonkey/www
+    Wrong: WWWPATH = /rackmonkey system/www
+
+tmplpath sets the filesystem path to your template files, it should be an
+absolute path and match where you put the files during installation (see 
+section 2, above), something like:
+
+    tmplpath = /home/rackmonkey/tmpl
+
+wwwpath sets the path within web space that your web content resides (that is
+relative to the DocumentRoot in Apache). For example if your web pages reside 
+in /var/www/html/rackmonkey and your web root is /var/www/html you would use:
+
+    wwwpath = /rackmonkey
+
+You now need to configure RackMonkey to connect to your database.
+
+For SQLite
+----------
+When using SQLite you need to choose a filesystem path for your database, for
+example if you want your database to reside in /home/rack/rackmonkey.db, use:
+    
+    dbconnect = dbi:SQLite:dbname=/home/rack/rackmonkey.db
+
+NB. This path must be writable by the web server and should not be within
+web space, or users will be able to download your database. As we're using
+SQLite you can leave the DBUSER and DBPASS values blank. Make sure the
+'SQLite' in the dbconnect string is in the case shown.
+
+For Postgres
+------------
+You will create a Postgres database and user in section 5. For now choose a
+database name, username and password. For simplicity we recommend you make the
+database and username both 'rackmonkey'. An example configuration would be:
+
+    dbconnect = dbi:Pg:dbname=rackmonkey
+    dbuser = rackmonkey
+    dbpass = 7jhH#98*
+
+NB. Make sure the 'Pg' in the dbconnect string is in the case shown.
+
+If your database is on a remote server you need to add the hostname of the
+database server. For example, if your database server is db1.example.com:
+
+    dbconnect = dbi:Pg:dbname=rackmonkey;host=db1.example.com
+    
+If your database server is not using the standard Postgres port (5432) you
+should also indicate this in the connection string. For example, if your 
+database is on db1.example.com port 9000:
+
+    dbconnect = dbi:Pg:dbname=rackmonkey;host=db1.example.com;port=9000
+    
+You can also connect to a local database on another port:
+
+    dbconnect = dbi:Pg:dbname=rackmonkey;port=9000
+
+For MySQL
+---------
+NB. RackMonkey requires features only available in MySQL 5 or higher, v3 or v4 
+will not work.
+
+You will create a MySQL database and user in section 5. For now choose a
+database name, username and password. For simplicity we recommend you make the
+database and username both 'rackmonkey'. An example configuration would be:
+
+    dbconnect = dbi:mysql:dbname=rackmonkey
+    dbuser = rackmonkey
+    dbpass = 7jhH#98*
+    
+NB. Make sure the 'mysql' in the dbconnect string is all lowercase.
+
+If your database is on a remote server you need to add the hostname of the
+database server. For example, if your database server is db1.example.com:
+
+    dbconnect = dbi:mysql:dbname=rackmonkey;host=db1.example.com
+    
+If your database server is not using the standard MySQL port (3306) you should
+also indicate this in the connection string. For example, if your database is
+on db1.example.com port 9000:
+
+    dbconnect = dbi:mysql:dbname=rackmonkey;host=db1.example.com;port=9000
+    
+You can also connect to a local database on another port:
+
+    dbconnect = dbi:mysql:dbname=rackmonkey;port=9000
+
+Rack Numbering Direction
+------------------------
+By default RackMonkey numbers racks from the bottom (unit 1 is nearest the 
+floor). If your racks are mostly numbered from the top, you should set the 
+value of 'number_from_top' to 1. Don't worry, you can still override this on a 
+rack-by-rack basis.
+
+6. Database Set Up
+==================
+Before you can run RackMonkey you need to set up the database. You must 
+import the the schema and default data files in the database before 
+RackMonkey will run. The sample data is optional, but strongly recommended as 
+it includes common companies, device roles and operating systems etc.
+
+For SQLite
+----------
+Make a note of the path you specified for 'dbconnect' in section 5, then run 
+following commands:
+
+    $ sqlite3 [PATH] < sql/schema/schema.sqlite.sql
+    $ sqlite3 [PATH] < sql/data/default_data.sql
+    $ sqlite3 [PATH] < sql/data/sample_data.sql
+    
+You should then change the permissions of the database file and its parent
+directory to be readable and writable by your web server. For example, you
+might change the owner to 'www' if that is the user your web server runs 
+under.
+
+For further information on administering SQLite see:
+http://www.sqlite.org/docs.html.
+
+For Postgres
+------------
+Using the values you set in section 5 you can create your RackMonkey user
+and database. Assuming you called both your user and database 'rackmonkey'
+you run (entering your chosen password when prompted):
+
+    $ su - postgres
+
+    $ createuser --pwprompt
+    Enter name of role to add: rackmonkey
+    Enter password for new role: 
+    Enter it again: 
+    Shall the new role be a superuser? (y/n) n
+    Shall the new role be allowed to create databases? (y/n) n
+    Shall the new role be allowed to create more new roles? (y/n) n
+    CREATE ROLE
+
+    $ createdb -O rackmonkey rackmonkey
+    CREATE DATABASE
+
+Run both of the following to set up the database and install the 
+default data (assumes your database and user are called rackmonkey):
+
+    $ psql -U rackmonkey rackmonkey < sql/schema/schema.postgres.sql
+    $ psql -U rackmonkey rackmonkey < sql/data/default_data.sql
+    $ psql -U rackmonkey rackmonkey < sql/data/sample_data.sql
+
+For further information on administering Postgres see:
+http://www.postgresql.org/docs.
+    
+For MySQL
+------------
+Connect to your MySQL instance as a user with admin powers. Then create the 
+rackmonkey database and connect to it:
+
+    mysql> create database rackmonkey;
+    mysql> use rackmonkey;
+
+Next, import the RackMonkey schema and data (you will need to adjust these 
+paths if you weren't in the rackmonkey directory when you started MySQL):
+
+    mysql> \. sql/schema/schema.mysql.sql
+    mysql> \. sql/data/default_data.sql
+    mysql> \. sql/data/sample_data.sql
+
+Check all queries were OK in the output.
+
+Finally you need to create a user and password to match your configuration 
+file (in section 5, above). For local connections:
+
+    mysql> GRANT ALL ON rackmonkey.* TO 'rackmonkey'@'localhost' IDENTIFIED BY '7jhH#98*';
+
+To also allow connections from other servers run:
+
+    mysql> GRANT ALL ON rackmonkey.* TO 'rackmonkey'@'%' IDENTIFIED BY '7jhH#98*';
+
+You should then flush privileges to ensure all connections see them:
+
+    mysql> FLUSH PRIVILEGES;
+
+For further information on administering MySQL see:
+http://dev.mysql.com/doc.
+    
+
+7. Running RackMonkey
+=====================
+You can now start the app by pointing your browser at the location of the
+rackmonkey.pl script. You should be presented with a screen showing a list of 
+racks. If everything works correctly you probably want to start reading the 
+User Guide, which you can find under the 'Help' tab in the RackMonkey 
+interface. If you're having trouble getting RackMonkey to run (for example you
+get an Internal Server Error) read doc/troubleshooting.txt.
+
+
+8. RackMonkey Plugins: Excel and DNS
+====================================
+
+Excel Spreadsheet Export: rack2xls.pl
+-------------------------------------
+The current Excel spreadsheet export plugin can produce an Excel 97-2004 
+format spreadsheet that is readable by many applications including Microsoft 
+Excel for Windows and Mac, OpenOffice Calc and iWork Numbers. At present the 
+plugin can only export a table of all devices, but further functionality will 
+appear in future releases.
+
+To use this plugin you need to install the Spreadsheet::WriteExcel Perl 
+module. If you're not sure how to do this see section 2 of this document.
+
+To enable the plugin, copy rack2xls.pl into the same directory as 
+rackmonkey.pl, make sure it's executable (chmod 755 usually does the trick)
+then uncomment the plugin_xls line in the RackMonkey configuration. You should 
+now find an 'Export XLS' button at the top of the device table views.
+
+DNS Queries: rackdns.pl
+-----------------------
+The DNS plugin is currently very basic. It performs a query for different 
+record types against a device name, but doesn't report errors.
+
+To use this plugin you need to install the Net::DNS Perl module. If you're not
+sure how to do this see section 2 of this document.
+
+To enable the plugin, copy rackdns.pl into the same directory as 
+rackmonkey.pl, make sure it's executable (chmod 755 usually does the trick)
+then uncomment the plugin_dns line in the RackMonkey configuration. You should 
+now find a 'Query DNS...' link next to the device name in single device  
+view. To see the single device view simply click on the name of a device in 
+the rack or device table views.

@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!-- 
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# Help default template                                                      #
+##############################################################################
+-->
+<head>
+	<title>RackMonkey User Guide</title>
+	<style type="text/css" media="all">
+	@import "<TMPL_VAR NAME=web_root>/styles/main.css";
+	@import "<TMPL_VAR NAME=web_root>/styles/tabs.css";
+	@import "<TMPL_VAR NAME=web_root>/styles/help.css";
+	</style>
+	<style type="text/css" media="print">
+	@import "<TMPL_VAR NAME=web_root>/styles/print.css";	
+	</style>
+	<script type="text/javascript" src="<TMPL_VAR NAME=web_root>/javascript/racklib.js"></script>
+	<link rel="icon" href="<TMPL_VAR NAME=web_root>/graphics/favicon.ico" />
+</head>
+<body>
+	<TMPL_INCLUDE NAME="nav-help.ssi">
+	<div id="main">
+		<p id="help_nav">
+			<a href="<TMPL_VAR NAME=base_url>?view=help">Help Overview</a> |
+			<strong>User Guide</strong> |
+			<a href="<TMPL_VAR NAME=base_url>?view=help&amp;view_type=admin">Admin Guide</a> |
+			<a href="<TMPL_VAR NAME=base_url>?view=help&amp;view_type=errors">Error Messages</a> |	
+			<a href="http://www.rackmonkey.org/doc/1.2.5">Docs (online)</a> |
+			<a href="http://www.rackmonkey.org/faq">FAQ (online)</a> |
+			<a href="http://www.rackmonkey.org/issues">Bugs &amp; Issues (online)</a> |
+			<a href="<TMPL_VAR NAME=base_url>?view=help&amp;view_type=getting_support">Getting Support</a> |
+			<a href="<TMPL_VAR NAME=base_url>?view=help&amp;view_type=legal">Legal</a>
+		</p>
+		<h2>RackMonkey User Guide</h2>
+		<p>
+			This guide will help you get started with RackMonkey and demonstrate some of its key features. This page includes screenshots: letters in brackets,
+			such as <strong>(E)</strong>, are used to refer to different screenshot areas from within the text. This document is updated from time to time: you
+			can always read the latest version at <a href="http://www.rackmonkey.org/doc/1.2.5">rackmonkey.org</a>. 
+		</p>
+		<h3 class="no_print" style="margin-bottom: -4px">Contents</h3>
+		<ol class="no_print">
+		  <li><a href="#interface_basics">Interface Basics</a></li>
+		  <li><a href="#config">Config</a></li>
+		  <li><a href="#working_with_devices">Working with Devices</a></li>
+		  <li><a href="#working_with_racks">Working with Racks</a></li>
+		  <li><a href="#working_with_apps">Working with Apps</a></li>
+		  <li><a href="#reports">Reports</a></li>
+		</ol>
+		<p><strong>Tip:</strong> Hovering your mouse over many items interface items (such as buttons) provides additional information.</p>
+		
+		<h3><a id="interface_basics">1. Interface Basics</a></h3>
+		<h4>1.1. Navigation</h4>
+		<p>The top of every RackMonkey screen looks similar to the screenshot below. There is a set of tabs <strong>(A)</strong> that provide access to the key parts of the application, a dropdown to jump to a physical view of a rack <strong>(B)</strong> and a search box <strong>(C)</strong> which allows you to find devices  by name, serial or asset number. The search is not case-sensitive and will also find partial matches. For example, searching for 'www' will find devices called 'WWW', 'www21' and 'www22'.</p>
+		<img src="<TMPL_VAR NAME=web_root>/graphics/help/navbar.png" width="748" height="44" alt="" class="screenshot" />
+		<h4>1.2. RackMonkey Organisation</h4>
+		<p>
+		  In order to use RackMonkey effectively you should be clear on what the different types of objects represent.
+		  The core objects are racks, devices and apps and they have their own interface tabs. 
+		  Other objects can be found under the <a href="#config">Config</a> tab.
+		</p>
+		<ul>
+			<li>Servers, routers, switches etc. are <strong>devices</strong> and are contained within <strong>racks</strong>.</li>
+			<li>A <strong>device</strong> has a <strong>hardware</strong> model and an <strong>operating system</strong>.</li>
+			<li>A <strong>device</strong> optionally has a <strong>domain</strong> (such as rackmonkey.org), a <strong>role</strong> (such as database server), a <strong>customer</strong> and a <strong>service level</strong>.</li>
+			<li><strong>Apps</strong> run on <strong>devices</strong>.</li>
+			<li><strong>Racks</strong> are organised in <strong>rows</strong> which reside in <strong>rooms</strong> within <strong>buildings</strong>.</li>
+		</ul>
+		<p><em>NB. Organisation by row is not supported within the user-interface in this release of RackMonkey. It will be added in a later release.</em></p>
+		<h4>1.3. Rack Units</h4>
+		<p>
+		  The sizes and positions of devices within RackMonkey are defined in rack units 'U'. This release of RackMonkey only supports integer U and will round
+		  non-integer values. For example, if you try to set the size of a switch to 1.5U it will be changed to 2U. A later release of RackMonkey will lift this 
+		  restriction and allow 1.5U and other non-integer devices.
+		</p>
+		<h4>1.4. Printing</h4>
+		<p>
+		  RackMonkey 1.2.5 includes dedicated print CSS to produce high-quality print outs. Print as normal in your browser and the optimised 
+		  CSS should be chosen automatically. For example, you might use this to take a rack diagram into the data centre. For device tables
+		  we recommend using landscape mode, as the content is quite wide. Even these help pages are optimised for printing (tested with A4 and US Letter paper).
+		</p>
+		<h3><a id="config">2. Config</a></h3>		
+		<p>
+			The <strong>Config</strong> tab contains most of the basic building blocks of RackMonkey data. Here you can configure <strong>Buildings</strong>, <strong>Rooms</strong>, <strong>Domains</strong>, <strong>Hardware</strong> models, <strong>Operating Systems</strong>, <strong>Organisations</strong> (such as customers and manufacturers), <strong>Roles</strong> and <strong>Service Levels</strong>. It's a good idea to add your own commonly used items to these categories when you start using RackMonkey. If the sample data was installed with RackMonkey you will have a selection of operating systems and hardware to get you started (see the install documentation for information on sample data).
+		</p>
+		<img src="<TMPL_VAR NAME=web_root>/graphics/help/config.png" width="502" height="229" alt="" class="screenshot" />
+		<p>The link at the bottom of config view <em>View RackMonkey System &amp; Database Information</em> can be used to get information on the software you're using. If you're reporting a bug please include this information.</p>
+		
+		<h3 class="print_break"><a id="working_with_devices">3. Working with Devices</a></h3>
+		<h4>3.1. Deciding How to View Devices</h4>
+		<p>
+			The <strong>Devices</strong> tab (screenshot below) allows you to see all the devices and their configuration. There are several devices views which present different information; you can select an alternate view from the <em>View Type</em> dropdown <strong>(A)</strong>. For example, if you are interested in asset information (such as serial number and age of device), choose the <em>Asset</em> view. To sort the table by a particular column click on its name; for example you could sort devices by <em>Customer</em> rather than the default name (chosen by clicking on the <em>Device</em> column). You can show/hide domain information for devices by clicking the <em>.dom</em> link <strong>(D)</strong>.
+		</p>
+		<p>
+			The <em>Show Filters</em> button <strong>(B)</strong> brings up the filter options that allow you to narrow down the devices shown to those of interest; for example you can show all devices for a given customer or all those running Ubuntu. To return to a view of all devices, click the <em>Reset</em> button at the right of the filters or select the <em>Show All</em> link (not pictured) in the table footer <strong>(G)</strong>. Devices that aren't in service are shown with a red tint (as is the case with the mon1 device in the screenshot). 
+		</p>
+		<p>
+		  If you have enabled the Excel export plugin (see installation instructions for details) then you can export the complete device table by selecting
+		  the <em>Export XLS</em> button <strong>(C)</strong>. The XLS export always includes all data irrespective of the view type or filters chosen .
+		  The format of the exported spreadsheet is Excel 97-2004 and is viewable in a wide range of applications, including Microsoft Excel, OpenOffice Calc 
+		  and iWork Numbers.
+		</p>
+		<h4>3.2. Working with Individual Devices</h4>
+		<p>
+			To view the full details for an individual device, select its name. This brings up a separate screen which also allows you to edit, copy or delete
+			the device. You can also edit a device directly by selecting the pencil icon next to its name or delete it by clicking on the 
+			minus icon <strong>(F)</strong>. To view a device within its rack, select the link in the rack column <strong>(E)</strong>. 
+			You can add a new device by clicking on the plus icon <strong>(D)</strong>. If you're adding many items to the same rack 
+			you may find it easier to do this Racks Physical View (discussed below).
+		</p>		
+		<p>
+		  The footer at the bottom the page <strong>(H)</strong> includes information on the connected user/IP, RackMonkey version and time the
+		  page was generated. This helps you ensure you're looking at current information and is also included in print outs.
+		</p>
+		<img src="<TMPL_VAR NAME=web_root>/graphics/help/devices.png" width="849" height="542" alt="" class="screenshot" />		  
+		<p class="print_break">
+		  When you click on a device name you are taken to the single device view (screenshot, below). 
+		</p>
+		<img src="<TMPL_VAR NAME=web_root>/graphics/help/device-single.png" width="600" height="438" alt="" class="screenshot" />		  
+		<p>
+		  The buttons at the top right of the form <strong>(A)</strong> allow you to create a new device from scratch, copy the key details of the current device
+		  and to return to the view of all devices (see above). If you have enabled the DNS plugin (see installation instructions) you can query the DNS information
+		  for the device <strong>(B)</strong>. To view the device highlighted in its rack, click on <em>View in rack&hellip;</em> link <strong>(C)</strong>
+		  (the physical rack view is covered in detail below).
+		</p>		
+		<p>
+		  Along with the role of the device <strong>(D)</strong> is an indicator of whether it is in service, for example a server might be racked, but
+		  not yet be running any applications. The serial <strong>(E)</strong> and asset number fields are searched when using the find feature at the top
+		  right of each RackMonkey view (see above). If the serial number is from a manufacturer with online warranty information RackMonkey will provide
+		  a link to query that information. In RackMonkey 1.2.5 this is only supported for Dell, but support for other manufacturers will be added in
+		  later releases.
+		</p>
+		<p>
+		  Not shown in this example is the App section. If a device is associated with Apps then they will appear above the notes section. Details on
+		  the App view are included below.
+		  The footer at the bottom of the form allows the deletion <strong>(F)</strong> and editing <strong>(G)</strong> of the entry, as well as showing
+		  who last updated it and when. Any attempt to delete an entry will require confirmation.
+		</p>
+		<h4>3.3 Devices &amp; Domains</h4>
+		<p>
+		  When editing devices, RackMonkey allows you to assign a domain to each device from a dropdown. If you have many devices on the same domains this makes
+		  things easier and cleaner. For situations where many devices are on separate domains (such as colocation) you may prefer to put the complete name 
+		  (including the domain) in the 'name' field and set the domain drop down to 'not applicable'. RackMonkey is smart enough to use the name correctly in
+		  this form and the DNS plugin will work as expected. You can of course mix both approaches.
+		</p>
+		
+		<h3 class="print_break"><a id="working_with_racks">4. Working with Racks</a></h3>
+		<h4>4.1. Racks Table</h4>
+		<p>
+			The <strong>Racks</strong> view (screenshot below) gives you an overview of your racks: which room they reside in and the number of devices they
+			contain. To view the details of a particular rack select its name <strong>(B)</strong>. To view the layout of devices within a rack select the
+			relevant entry in the layout column <strong>(C)</strong> (see Racks Physical View, below, for details). If you want to see multiple racks
+			side-by-side, select the check boxes next to the racks you wish to view <strong>(D)</strong> (selecting the check mark in the top column toggles
+			the selected racks) and click the <em>Device Layout</em> button <strong>(E)</strong>. You can sort the racks table by clicking on the headings at
+			the top of the table. For example selecting <em>Free U</em> will sort the racks from least to most free space.
+		</p>
+		<p>
+			You can see the number of devices within a rack in the <em>Layout</em> column <strong>(C)</strong>. The total and used space in rack units are shown
+			in the <em>Size (U)</em> and <em>Free (U)</em> columns. To create a new rack use the plus icon <strong>(A)</strong>, to edit a rack click the pencil
+			icon next to its name, to delete it click on the minus icon <strong>(B)</strong>.
+		</p>
+		<img src="<TMPL_VAR NAME=web_root>/graphics/help/racks.png" width="548" height="229" alt="" class="screenshot" />
+		<h4>4.2. Racks Physical View</h4>
+		<p>
+			In the <strong>Physical Rack</strong> View (screenshot below) you can see the contents of your racks. You can jump to physical view at any time
+			using the dropdown at the top of every view (see <a href="#interface_basics">interface basics</a>). This view shows the name and hardware type of
+			each device. To view more details about devices in the rack, such as the manufacturer and serial number, click on the 'i' icon at the top left 
+			<strong>(A)</strong>. To edit the rack itself click on the pencil at the top right of the rack <strong>(B)</strong>.
+		</p>
+		<p>
+		  To edit or delete a device, click on the pencil <strong>(C)</strong> or minus buttons <strong>(D)</strong> next to the device. To add devices to the
+		  rack, click on the plus icon in the location you wish to place the device <strong>(E)</strong>. Devices that aren't in service are shown within the
+		  rack with a red tint <strong>(F)</strong>.
+		</p>
+		<p>In order to view more than one rack side-by-side you need to select them in the Racks Table (see above).</p>
+		<img src="<TMPL_VAR NAME=web_root>/graphics/help/racks-physical.png" width="505" height="370" alt="" class="screenshot" />
+		
+		<h3 class="print_break"><a id="working_with_apps">5. Working with Apps</a></h3>
+		<p>
+		  The app table view works in a very similar way to the device table view. When looking at the details of an individual app you will
+		  see a screen similar to the one below. You can create a new app or return to the view of all apps with the buttons at the top right
+		  of the form <strong>(A)</strong>. To associate an app with a device, click the plus button <strong>(B)</strong> and complete the simple
+		  form. To remove an association choose the minus button <strong>(C)</strong>.
+		</p>
+		<p>
+		  The device view will also show any app associated
+		  with a given device: you can just to a device view by clicking on its name (such as db1.roadrunner.example.com in this example).
+		</p>
+		<img src="<TMPL_VAR NAME=web_root>/graphics/help/app-single.png" width="609" height="283" alt="" class="screenshot" />
+		
+		<h3><a id="reports">6. Reports</a></h3>
+		<p>
+			The <strong>Reports</strong> tab gives you information on all your devices and racks. 
+			For example, you can see the total space available in your racks as well as the customers with the most devices, most common operating systems etc.
+			You can also check for duplicate OS licence keys, serial and asset numbers.
+		</p>
+	</div>
+	<TMPL_INCLUDE NAME="footer.ssi">
+</body>
+</html>

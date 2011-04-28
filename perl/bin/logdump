@@ -1,0 +1,78 @@
+#!/usr/bin/env perl
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# RackMonkey log table dump script                                           #
+##############################################################################
+
+use strict;
+use warnings;
+
+use 5.006_001;
+
+use lib '..';
+use RackMonkey::Engine;
+
+our $VERSION = '1.2.5-1';
+our $AUTHOR  = 'Will Green (wgreen at users.sourceforge.net)';
+
+our $log;
+
+eval {
+    my $backend = RackMonkey::Engine->new;
+
+    my $dbh = $backend->dbh;
+    my $sth = $dbh->prepare(
+        qq!
+		SELECT logging.* 
+		FROM logging
+		ORDER BY logging.id
+	!
+    );
+    $sth->execute();
+    $log = $sth->fetchall_arrayref({});
+};
+die "Unable to retrieve log entries - $@\n" if $@;
+
+$ARGV[0] ||= '';
+
+if ($ARGV[0] eq '-h' or $ARGV[0] eq '-?')
+{
+    print "RackMonkey Log Dumper\n\n";
+    print "\t-h -?\tdisplay this help\n";
+    print "\t-l\tprint an extended listing\n";
+    print "\t-v -V\tdisplay version information\n\n";
+    print "Please note that all times reported by logdump are GMT.\n";
+}
+elsif ($ARGV[0] eq '-V' or $ARGV[0] eq '-v')
+{
+    print "RackMonkey Log Dumper v$VERSION by Will Green.\n";
+}
+elsif ($ARGV[0] eq '-l')
+{
+    print "  Log ID        Table Action                     Name     ID       Changed (GMT)      Changed By\n";
+    print "================================================================================================\n";
+
+    for my $line (@$log)
+    {
+        $$line{'name_changed'} ||= '-';
+        $$line{'name_changed'} = substr($$line{'name_changed'}, 0, 24);
+        printf("%8s %12s %6s %24s %6s %19s %15s\n", $$line{'id'}, $$line{'table_changed'}, $$line{'change_type'}, $$line{'name_changed'}, $$line{'id_changed'}, $$line{'update_time'}, $$line{'update_user'});
+    }
+    print "================================================================================================\n";
+}
+else
+{
+    print "       Table Action                Name     ID    Changed (GMT)     Changed By\n";
+    print "===============================================================================\n";
+
+    for my $line (@$log)
+    {
+        $$line{'name_changed'} ||= '-';
+        $$line{'name_changed'} = substr($$line{'name_changed'}, 0, 19);
+        $$line{'update_time'}  = substr($$line{'update_time'},  0, 16);
+        printf("%12s %6s %19s %6s %16s %15s\n", $$line{'table_changed'}, $$line{'change_type'}, $$line{'name_changed'}, $$line{'id_changed'}, $$line{'update_time'}, $$line{'update_user'});
+    }
+    print "===============================================================================\n";
+}

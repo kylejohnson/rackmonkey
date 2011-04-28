@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!-- 
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# Hardware default (table) template                                          #
+##############################################################################
+-->
+<head>
+	<title>Hardware | RackMonkey</title>
+	<style type="text/css" media="all">
+	@import "<TMPL_VAR NAME=web_root>/styles/main.css";
+	@import "<TMPL_VAR NAME=web_root>/styles/tabs.css";
+	@import "<TMPL_VAR NAME=web_root>/styles/itemtable.css";
+	</style>
+	<style type="text/css" media="print">
+	@import "<TMPL_VAR NAME=web_root>/styles/print.css";	
+	</style>
+	<script type="text/javascript" src="<TMPL_VAR NAME=web_root>/javascript/racklib.js"></script>
+	<link rel="icon" href="<TMPL_VAR NAME=web_root>/graphics/favicon.ico" />
+</head>
+<body>
+	<TMPL_INCLUDE NAME="nav-config.ssi">
+	<div id="main">
+		<table class="itemtable">
+			<tr>
+				<th colspan="3">
+					<a title="Create a new hardware model" onclick="window.location = '<TMPL_VAR NAME=base_url>?view=hardware&amp;view_type=create'; return false;"><img class="create" src="<TMPL_VAR NAME=web_root>/graphics/icons/add.png" width="14" height="14" alt=""/></a>
+					<a title="Sort by name" href="<TMPL_VAR NAME=base_url>?view=hardware&amp;order_by=hardware.name">Hardware</a>
+				</th>
+				<th><a title="Sort by manufacturer" href="<TMPL_VAR NAME=base_url>?view=hardware&amp;order_by=org.name">Manufacturer</a></th>	
+				<th><a title="Sort by size" href="<TMPL_VAR NAME=base_url>?view=hardware&amp;order_by=hardware.size">Size</a></th>	
+				<th><a title="Sort by support site" href="<TMPL_VAR NAME=base_url>?view=hardware&amp;order_by=hardware.support_url">Supp</a></th>		
+				<th><a title="Sort by specification site" href="<TMPL_VAR NAME=base_url>?view=hardware&amp;order_by=hardware.spec_url">Spec</a></th>
+				<th><a title="Sort by notes" href="<TMPL_VAR NAME=base_url>?view=hardware&amp;order_by=hardware.notes">Notes</a></th>		
+			</tr>
+			<TMPL_IF NAME=hardware>
+			<TMPL_LOOP NAME=hardware>
+			<TMPL_IF NAME="__odd__"><tr class="odd"><TMPL_ELSE><tr class="even"></TMPL_IF>
+				<td class="item_name"><a title="View details for this hardware" href="<TMPL_VAR NAME=base_url>?view=hardware&amp;view_type=single&amp;id=<TMPL_VAR ESCAPE=URL NAME=id>"><TMPL_VAR ESCAPE=HTML NAME=name></a></td>
+				<td class="item_edit"><a title="Edit hardware '<TMPL_VAR ESCAPE=HTML NAME=name>'" href="<TMPL_VAR NAME=base_url>?view=hardware&amp;view_type=edit&amp;id=<TMPL_VAR ESCAPE=URL NAME=id>"><img style="float: left; border: none" src="<TMPL_VAR NAME=web_root>/graphics/icons/pencil.png" width="14" height="14" alt=""/></a></td>
+				<td class="item_delete"><a onclick="return confirmDel('<TMPL_VAR ESCAPE=HTML NAME=name>')" title="Delete hardware '<TMPL_VAR ESCAPE=HTML NAME=name>'" href="<TMPL_VAR NAME=base_url>?view=hardware&amp;act=delete&amp;act_on=hardware&amp;act_id=<TMPL_VAR ESCAPE=URL NAME=id>"><img style="float: left; border: none" src="<TMPL_VAR NAME=web_root>/graphics/icons/delete.png" width="14" height="14" alt=""/></a></td>
+				<td><TMPL_VAR ESCAPE=HTML NAME=manufacturer_name></td>
+				<td><TMPL_VAR ESCAPE=HTML NAME=size></td>
+				<td><TMPL_IF NAME=support_url><a title="View support page for this hardware" href="<TMPL_VAR ESCAPE=HTML NAME=support_url>">&gt;&gt;</a><TMPL_ELSE>-</TMPL_IF></td>
+				<td><TMPL_IF NAME=spec_url><a title="View specification page for this hardware" href="<TMPL_VAR ESCAPE=HTML NAME=spec_url>">&gt;&gt;</a><TMPL_ELSE>-</TMPL_IF></td>
+				<td><TMPL_IF NAME=notes_short><span title="<TMPL_VAR NAME=notes>"><TMPL_VAR NAME=notes_short></span><TMPL_ELSE><TMPL_IF NAME=notes><TMPL_VAR NAME=notes><TMPL_ELSE>-</TMPL_IF></TMPL_IF></td>
+			</tr></TMPL_LOOP></TMPL_IF>
+			<tr>
+				<td colspan="8" class="footer">
+					Showing <TMPL_VAR ESCAPE=HTML NAME=listed_hardware_count> of <TMPL_VAR ESCAPE=HTML NAME=total_hardware_count> hardware models
+				</td>
+			</tr>
+		</table>
+	</div>
+	<TMPL_INCLUDE NAME="footer.ssi">
+</body>
+</html>

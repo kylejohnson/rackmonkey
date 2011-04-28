@@ -1,0 +1,40 @@
+<!-- org edit include: Version 1.2.5-1 -->
+						<div>
+							<label for="name">Name</label><br />
+							<input id="name" name="name" type="text" size="60" value="<TMPL_VAR ESCAPE=HTML NAME=name>" />
+						</div>
+						<div>
+							<label for="descript">Description</label><br />
+							<input id="descript" name="descript" type="text" size="60" value="<TMPL_VAR ESCAPE=HTML NAME=descript>" />
+						</div>
+						<div>
+							<label for="account_no">Account Number</label><br />
+							<input id="account_no" name="account_no" type="text" size="60" value="<TMPL_VAR ESCAPE=HTML NAME=account_no>" />
+						</div>
+						<div>
+							<label for="customer">Customer</label><br />
+							<input id="customer" name="customer" type="checkbox"<TMPL_IF NAME=customer>checked="checked"</TMPL_IF> />
+						</div>
+						<div>
+							<label for="software">Makes Software</label><br />
+							<input id="software" name="software" type="checkbox" <TMPL_IF NAME=software>checked="checked"</TMPL_IF> />
+						</div>
+						<div>
+							<label for="hardware">Makes Hardware</label><br />
+							<input id="hardware" name="hardware" type="checkbox" <TMPL_IF NAME=hardware>checked="checked"</TMPL_IF> />
+						</div>	
+						<div>
+							<label for="home_page">Home Page</label><br />
+							<input id="home_page" name="home_page" type="text" size="60" value="<TMPL_VAR ESCAPE=HTML NAME=home_page>" />
+						</div>
+						<div>
+							<label for="notes">Notes [<a onclick="showNotesStyleKey();" href="#">show style syntax</a>]</label><br />
+							<textarea id="notes" name="notes" cols="55" rows="4"><TMPL_VAR ESCAPE=HTML NAME=notes></textarea>
+							<p id="notes_style_key">
+								<strong>Notes Style Syntax</strong><br/>
+								Emphasis: **example** = <em>example</em><br/>
+								Strong: ***example*** = <strong>example</strong><br/>
+								Link: [http://www.example.com|example link] = <a href="http://www.example.com">example link</a>
+							</p>
+						</div>
+						<!-- end of org edit include -->

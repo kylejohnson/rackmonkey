@@ -1,0 +1,115 @@
+/*
+##############################################################################
+# RackMonkey - Know Your Racks - http://www.rackmonkey.org                   #
+# Version 1.2.5-1                                                            #
+# (C)2004-2009 Will Green (wgreen at users.sourceforge.net)                  #
+# CSS styling for item tables                                                #
+##############################################################################
+*/
+
+table.itemtable
+{
+	border: solid black 1px;
+	border-collapse: collapse;
+	margin-right: 12px;
+	margin-top: 12px;
+}
+
+table.itemtable img.create
+{
+	float: right;
+	margin-left: 4px; 
+	border: none;
+}
+
+table.itemtable td
+{
+	border: solid black 1px;
+	padding: 4px;
+}
+
+table.itemtable td.item_name
+{
+	font-weight: bold;
+	border-right: none;
+	min-width: 6em;
+}
+
+table.itemtable td.item_edit
+{
+	border-left: none;
+    border-right: none;
+	padding-right: 0px;
+}
+
+table.itemtable td.item_delete
+{
+	border-left: none;
+	padding-left: 3px;
+}
+
+table.itemtable tr.odd
+{
+	background: #CCC; 
+}
+
+table.itemtable tr.even
+{
+	background: #FFF; 
+}
+
+table.itemtable th
+{
+	text-align: left;
+	background: #444;
+	color: #FFF;
+	border: solid black 1px;
+	padding: 4px;
+}
+
+table.itemtable tr th:first-child
+{
+	min-width: 9em;
+}
+
+
+table.itemtable  a
+{
+	text-decoration: none;
+}
+
+table.itemtable th a
+{
+	font-size: small;
+	color: white;
+}
+
+table.itemtable th a.small
+{
+	font-size: x-small;
+	color: white;
+	font-weight: normal;
+}
+
+table.itemtable td.footer
+{
+	text-align: left;
+	background: #444;
+	color: #FFF;
+	border: solid 1px #000;
+	padding: 3px;
+	font-size: x-small;
+	font-family: verdana, helvetica, sans-serif;
+}
+
+table.itemtable td.footer a
+{
+	color: white;
+	text-decoration: underline;	
+}
+
+#device_options select
+{
+	font-family: verdana, helvetica, sans-serif;
+  	font-size: 0.8em;
+}
